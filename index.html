@@ -38,12 +38,18 @@
     h1{font-size:38px;letter-spacing:.2px;margin:10px 0 12px;text-transform:uppercase}
     .kicker{color:var(--muted)}
 
-    /* MARQUEE */
-    .marquee{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#0f0f0f}
-    .marquee .track{display:flex;gap:24px;white-space:nowrap;will-change:transform;animation:slide 18s linear infinite}
-    .tag{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:#0d0d0d;color:var(--muted)}
-    .dot{width:6px;height:6px;border-radius:999px;background:var(--accent2)}
-    @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50% )}}
+    /* MARQUEE – LED TICKER */
+    .ticker{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#020202}
+    .ticker .track{display:flex;gap:28px;white-space:nowrap;will-change:transform;animation:scroll 22s linear infinite;padding:10px 0}
+    .led{display:inline-flex;align-items:center;gap:10px;border:1px solid #0d0d0d;border-radius:999px;padding:8px 12px;background:linear-gradient(#0a0a0a,#0d0d0d);position:relative;box-shadow:inset 0 0 0 1px #151515, 0 0 0 1px #050505}
+    .led .lamp{width:8px;height:8px;border-radius:999px;box-shadow:0 0 8px currentColor, 0 0 16px currentColor}
+    .led .txt{font:700 12px/1.1 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;letter-spacing:1px;text-transform:uppercase;text-shadow:0 0 8px currentColor, 0 0 16px currentColor}
+    .led.green{color:#22c55e}
+    .led.red{color:#ef4444}
+    .led.amber{color:#f59e0b}
+    .led.cyan{color:#06b6d4}
+    .ticker:hover .track{animation-play-state:paused}
+    @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
     /* TOOLBAR */
     .toolbar{position:sticky;top:64px;z-index:30;border-bottom:1px solid var(--line);background:#0e0e0e}
@@ -102,17 +108,27 @@
   </section>
 
   <!-- MARQUEE -->
-  <div class="marquee">
-    <div class="track" aria-hidden="true" style="padding:10px 0">
-      <span class="tag"><span class="dot"></span> Free 2–5 day shipping</span>
-      <span class="tag"><span class="dot"></span> Easy 30‑day returns</span>
-      <span class="tag"><span class="dot"></span> Verified vintage</span>
-      <span class="tag"><span class="dot"></span> Carbon‑neutral packaging</span>
-      <span class="tag"><span class="dot"></span> Free 2–5 day shipping</span>
-      <span class="tag"><span class="dot"></span> Easy 30‑day returns</span>
-      <span class="tag"><span class="dot"></span> Verified vintage</span>
-      <span class="tag"><span class="dot"></span> Carbon‑neutral packaging</span>
+  <div class="ticker" role="marquee" aria-label="Store highlights and shipping info">
+    <div class="track">
+      <span class="led green"><span class="lamp"></span><span class="txt">Free 2–5 Day Shipping</span></span>
+      <span class="led amber"><span class="lamp"></span><span class="txt">Easy 30‑Day Returns</span></span>
+      <span class="led cyan"><span class="lamp"></span><span class="txt">Verified Vintage</span></span>
+      <span class="led red"><span class="lamp"></span><span class="txt">Carbon‑Neutral Packaging</span></span>
+      <span class="led green"><span class="lamp"></span><span class="txt">Weekly Drops Friday 12PM ET</span></span>
+      <span class="led amber"><span class="lamp"></span><span class="txt">Limited Quantities</span></span>
+      <span class="led cyan"><span class="lamp"></span><span class="txt">Authenticity Checked</span></span>
+      <span class="led red"><span class="lamp"></span><span class="txt">G&J Premium Vintage</span></span>
+      <!-- duplicate for seamless loop -->
+      <span class="led green"><span class="lamp"></span><span class="txt">Free 2–5 Day Shipping</span></span>
+      <span class="led amber"><span class="lamp"></span><span class="txt">Easy 30‑Day Returns</span></span>
+      <span class="led cyan"><span class="lamp"></span><span class="txt">Verified Vintage</span></span>
+      <span class="led red"><span class="lamp"></span><span class="txt">Carbon‑Neutral Packaging</span></span>
+      <span class="led green"><span class="lamp"></span><span class="txt">Weekly Drops Friday 12PM ET</span></span>
+      <span class="led amber"><span class="lamp"></span><span class="txt">Limited Quantities</span></span>
+      <span class="led cyan"><span class="lamp"></span><span class="txt">Authenticity Checked</span></span>
+      <span class="led red"><span class="lamp"></span><span class="txt">G&J Premium Vintage</span></span>
     </div>
+  </div>
   </div>
 
   <!-- TOOLBAR -->
