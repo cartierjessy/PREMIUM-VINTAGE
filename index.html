@@ -1,433 +1,335 @@
-import React, { useMemo, useState } from "react";
-import { motion } from "framer-motion";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Slider } from "@/components/ui/slider";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Heart, ShoppingBag, Menu, Star, ChevronRight, Filter, Truck, Sparkles, BadgeDollarSign } from "lucide-react";
-
-// --- Dummy catalog data ---
-const CATEGORIES = [
-  { id: "new-arrivals", name: "New Arrivals" },
-  { id: "tops", name: "Tops" },
-  { id: "outerwear", name: "Outerwear" },
-  { id: "denim", name: "Denim" },
-  { id: "tees", name: "Graphic Tees" },
-  { id: "accessories", name: "Accessories" },
-];
-
-const SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
-const COLORS = ["Black", "White", "Cream", "Navy", "Olive", "Burgundy"];
-
-const PRODUCTS = Array.from({ length: 12 }).map((_, i) => ({
-  id: `p-${i + 1}`,
-  title: [
-    "Vintage Varsity Jacket",
-    "90s Band Graphic Tee",
-    "Selvedge Denim Jeans",
-    "Wool Overcoat",
-    "Corduroy Overshirt",
-    "Leather Biker Jacket",
-    "Herringbone Blazer",
-    "Cable Knit Sweater",
-    "Carpenter Denim",
-    "Suede Bomber",
-    "Oxford Button-Down",
-    "Workwear Chore Coat",
-  ][i % 12],
-  price: [98, 69, 140, 220, 115, 260, 185, 120, 130, 210, 85, 165][i % 12],
-  was: [0, 0, 0, 260, 0, 320, 0, 0, 0, 260, 0, 0][i % 12],
-  rating: [4.6, 4.8, 4.4, 4.9, 4.3, 4.7, 4.6, 4.5, 4.2, 4.7, 4.3, 4.5][i % 12],
-  category: CATEGORIES[i % CATEGORIES.length].id,
-  color: COLORS[i % COLORS.length],
-  size: SIZES[i % SIZES.length],
-  image: `https://picsum.photos/seed/vintage-${i + 1}/800/1000`,
-  badge: i % 5 === 0 ? "Limited" : i % 3 === 0 ? "New" : undefined,
-}));
-
-// --- Utility components ---
-const Container = ({ children }) => (
-  <div className="mx-auto w-full max-w-7xl px-4 md:px-6 lg:px-8">{children}</div>
-);
-
-const Logo = () => (
-  <div className="flex items-center gap-2">
-    <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-zinc-200 to-zinc-50 shadow-inner ring-1 ring-white/40" />
-    <span className="font-serif text-xl tracking-wide">Veluxe Vintage</span>
-  </div>
-);
-
-const StarRating = ({ value }) => (
-  <div className="flex items-center gap-1 text-sm">
-    {Array.from({ length: 5 }).map((_, i) => (
-      <Star key={i} className={`h-4 w-4 ${i < Math.round(value) ? "fill-current" : "opacity-30"}`} />
-    ))}
-    <span className="ml-1 text-zinc-500">{value.toFixed(1)}</span>
-  </div>
-);
-
-// --- Nav ---
-const NavBar = ({ onOpenFilters }) => {
-  return (
-    <div className="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-white/60 bg-white/80 border-b">
-      <Container>
-        <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden"><Menu className="h-5 w-5" /></Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="w-80">
-                <SheetHeader>
-                  <SheetTitle>Browse</SheetTitle>
-                </SheetHeader>
-                <nav className="mt-6 grid gap-2">
-                  {CATEGORIES.map(c => (
-                    <a key={c.id} href={`#${c.id}`} className="flex items-center justify-between rounded-xl border p-3 hover:shadow-sm">
-                      <span>{c.name}</span>
-                      <ChevronRight className="h-4 w-4" />
-                    </a>
-                  ))}
-                </nav>
-                <div className="mt-8">
-                  <Button onClick={onOpenFilters} variant="outline" className="w-full"><Filter className="mr-2 h-4 w-4"/>Filters</Button>
-                </div>
-              </SheetContent>
-            </Sheet>
-            <Logo />
-          </div>
-
-          <div className="hidden md:block w-full max-w-md">
-            <div className="relative">
-              <Input placeholder="Search vintage gems…" className="rounded-2xl pl-4 pr-12" />
-              <Button size="icon" variant="ghost" className="absolute right-1 top-1/2 -translate-y-1/2 rounded-xl">
-                <Sparkles className="h-5 w-5" />
-              </Button>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon"><Heart className="h-5 w-5"/></Button>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="ghost" size="icon"><ShoppingBag className="h-5 w-5"/></Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-lg">
-                <DialogHeader>
-                  <DialogTitle>Your bag</DialogTitle>
-                </DialogHeader>
-                <div className="text-sm text-zinc-600">No items yet — start exploring our limited drops.</div>
-              </DialogContent>
-            </Dialog>
-          </div>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Veluxe Vintage – Premium</title>
+  <!-- Tailwind CDN (no build tools needed) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { serif: ['"Playfair Display"', 'ui-serif', 'Georgia'] },
+          boxShadow: { soft: '0 10px 30px -12px rgba(0,0,0,.15)' },
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    html { font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji" }
+    .glass { backdrop-filter: saturate(150%) blur(8px); background: rgba(255,255,255,.7); }
+    .card:hover img { transform: scale(1.03); }
+  </style>
+</head>
+<body class="bg-white text-neutral-900">
+  <!-- NAV -->
+  <header class="sticky top-0 z-40 border-b glass">
+    <div class="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
+      <div class="flex h-16 items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="h-8 w-8 rounded-xl bg-gradient-to-br from-neutral-200 to-neutral-50 shadow-inner ring-1 ring-white/40"></div>
+          <span class="font-serif text-xl tracking-wide">Veluxe Vintage</span>
         </div>
-      </Container>
+        <div class="hidden md:block w-full max-w-lg">
+          <label class="relative block">
+            <input id="searchTop" type="search" placeholder="Search vintage gems…" class="w-full rounded-2xl border px-4 py-2 pr-11 outline-none focus:ring-2 focus:ring-black/10">
+            <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-neutral-500">⌘K</span>
+          </label>
+        </div>
+        <div class="flex items-center gap-2 text-sm">
+          <button id="openFilters" class="rounded-xl border px-3 py-2 hover:bg-neutral-50">Filters</button>
+          <button class="rounded-xl border px-3 py-2 hover:bg-neutral-50">Bag (0)</button>
+        </div>
+      </div>
     </div>
-  );
-};
+  </header>
 
-// --- Hero ---
-const Hero = () => {
-  return (
-    <section className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(1200px_600px_at_50%_-20%,rgba(0,0,0,0.08),transparent_60%)]"/>
-      <Container>
-        <div className="flex flex-col items-center gap-6 py-16 text-center md:py-20">
-          <Badge className="rounded-full px-3 py-1 text-xs">Curated & Authenticated</Badge>
-          <motion.h1 initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} transition={{duration:.5}} className="max-w-3xl font-serif text-4xl md:text-5xl">
-            Premium Vintage with a Modern Edge
-          </motion.h1>
-          <p className="max-w-2xl text-base text-zinc-600">
-            Discover hand‑picked pieces with impeccable provenance. Limited runs, boutique quality, and a smoother-than-Sh﻿opify shopping flow.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <Button className="rounded-2xl px-5">Shop New Drops</Button>
-            <Button variant="outline" className="rounded-2xl px-5">Explore Collections</Button>
-          </div>
-          <div className="grid w-full max-w-5xl grid-cols-2 gap-2 md:grid-cols-4">
-            {["Free 2–5 day shipping", "Carbon‑neutral packaging", "Easy 30‑day returns", "Verified vintage"]
-              .map((t, i) => (
-                <div key={i} className="rounded-2xl border p-3 text-sm text-zinc-600 flex items-center gap-2">
-                  {i===0 && <Truck className="h-4 w-4"/>}
-                  {i===1 && <Sparkles className="h-4 w-4"/>}
-                  {i===2 && <BadgeDollarSign className="h-4 w-4"/>}
-                  {i===3 && <Star className="h-4 w-4"/>}
-                  {t}
-                </div>
-            ))}
-          </div>
+  <!-- HERO -->
+  <section class="relative overflow-hidden">
+    <div class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(1200px_600px_at_50%_-20%,rgba(0,0,0,0.08),transparent_60%)]"></div>
+    <div class="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
+      <div class="flex flex-col items-center gap-6 py-14 text-center md:py-20">
+        <span class="rounded-full border px-3 py-1 text-xs">Curated & Authenticated</span>
+        <h1 class="max-w-3xl font-serif text-4xl md:text-5xl">Premium Vintage with a Modern Edge</h1>
+        <p class="max-w-2xl text-neutral-600">Hand‑picked pieces with impeccable provenance. Limited runs, boutique quality, and a smoother‑than‑Shopify flow.</p>
+        <div class="flex gap-3">
+          <a href="#grid" class="rounded-2xl bg-black px-5 py-2 text-white">Shop New Drops</a>
+          <a href="#grid" class="rounded-2xl border px-5 py-2">Explore Collections</a>
         </div>
-      </Container>
-    </section>
-  );
-};
-
-// --- Filters ---
-const FilterPanel = ({ open, onOpenChange, price, setPrice, selected, setSelected }) => {
-  const toggle = (key, value) => {
-    setSelected(prev => {
-      const set = new Set(prev[key]);
-      set.has(value) ? set.delete(value) : set.add(value);
-      return { ...prev, [key]: set };
-    });
-  };
-
-  const content = (
-    <div className="grid gap-8">
-      <div>
-        <h4 className="mb-3 font-medium">Price</h4>
-        <Slider value={price} onValueChange={setPrice} min={40} max={300} step={5}/>
-        <div className="mt-2 text-sm text-zinc-600">Up to ${price[0]}</div>
+        <div class="grid w-full max-w-5xl grid-cols-2 gap-2 md:grid-cols-4 text-sm text-neutral-600">
+          <div class="rounded-2xl border p-3">Free 2–5 day shipping</div>
+          <div class="rounded-2xl border p-3">Carbon‑neutral packaging</div>
+          <div class="rounded-2xl border p-3">Easy 30‑day returns</div>
+          <div class="rounded-2xl border p-3">Verified vintage</div>
+        </div>
       </div>
-      <Accordion type="multiple" className="w-full">
-        <AccordionItem value="category">
-          <AccordionTrigger>Category</AccordionTrigger>
-          <AccordionContent>
-            <div className="flex flex-wrap gap-2">
-              {CATEGORIES.map(c => (
-                <Button key={c.id} variant={selected.categories.has(c.id) ? "default" : "outline"} className="rounded-xl" onClick={() => toggle("categories", c.id)}>
-                  {c.name}
-                </Button>
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="size">
-          <AccordionTrigger>Size</AccordionTrigger>
-          <AccordionContent>
-            <div className="flex flex-wrap gap-2">
-              {SIZES.map(s => (
-                <Button key={s} variant={selected.sizes.has(s) ? "default" : "outline"} className="rounded-xl" onClick={() => toggle("sizes", s)}>
-                  {s}
-                </Button>
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="color">
-          <AccordionTrigger>Color</AccordionTrigger>
-          <AccordionContent>
-            <div className="flex flex-wrap gap-2">
-              {COLORS.map(c => (
-                <Button key={c} variant={selected.colors.has(c) ? "default" : "outline"} className="rounded-xl" onClick={() => toggle("colors", c)}>
-                  {c}
-                </Button>
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
     </div>
-  );
+  </section>
 
-  return (
-    <>
-      <div className="hidden lg:block sticky top-24 h-[calc(100vh-7rem)] w-72 shrink-0 overflow-y-auto rounded-2xl border p-5">
-        {content}
-      </div>
-      <Sheet open={open} onOpenChange={onOpenChange}>
-        <SheetContent side="right" className="w-full sm:max-w-md">
-          <SheetHeader>
-            <SheetTitle>Filters</SheetTitle>
-          </SheetHeader>
-          <div className="mt-6">{content}</div>
-        </SheetContent>
-      </Sheet>
-    </>
-  );
-};
-
-// --- Product Card ---
-const ProductCard = ({ product }) => {
-  return (
-    <Card className="group overflow-hidden rounded-3xl border-0 bg-white shadow-sm ring-1 ring-black/5">
-      <div className="relative aspect-[3/4] overflow-hidden">
-        <img src={product.image} alt={product.title} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"/>
-        {product.badge && (
-          <div className="absolute left-3 top-3">
-            <Badge className="rounded-full bg-black/80 text-white backdrop-blur">{product.badge}</Badge>
-          </div>
-        )}
-        <Button variant="secondary" className="absolute right-3 top-3 rounded-full bg-white/80 backdrop-blur hover:bg-white">
-          <Heart className="h-4 w-4"/>
-        </Button>
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/40 to-transparent"/>
-      </div>
-      <CardHeader className="space-y-1 p-4 pb-0">
-        <h3 className="line-clamp-1 font-medium">{product.title}</h3>
-        <StarRating value={product.rating} />
-      </CardHeader>
-      <CardContent className="p-4 pt-2">
-        <div className="flex items-baseline gap-2">
-          <div className="text-lg font-semibold tracking-tight">${product.price}</div>
-          {product.was > 0 && (
-            <div className="text-sm text-zinc-500 line-through">${product.was}</div>
-          )}
+  <!-- TOOLBAR -->
+  <div class="sticky top-16 z-30 border-b bg-white/80 glass">
+    <div class="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
+      <div class="flex flex-col gap-3 py-3 md:flex-row md:items-center md:justify-between">
+        <div class="flex gap-2 text-sm">
+          <button data-filtercat="all" class="chip active">All</button>
+          <button data-filtercat="outerwear" class="chip">Outerwear</button>
+          <button data-filtercat="denim" class="chip">Denim</button>
+          <button data-filtercat="tees" class="chip">Graphic Tees</button>
+          <button data-filtercat="accessories" class="chip">Accessories</button>
         </div>
-        <div className="mt-1 text-xs text-zinc-500">{product.color} · {product.size}</div>
-      </CardContent>
-      <CardFooter className="p-4 pt-0">
-        <Button className="w-full rounded-2xl">Add to bag</Button>
-      </CardFooter>
-    </Card>
-  );
-};
+        <div class="flex items-center gap-2">
+          <input id="search" placeholder="Search…" class="rounded-2xl border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black/10" />
+          <select id="sort" class="rounded-2xl border px-3 py-2 text-sm">
+            <option value="featured">Featured</option>
+            <option value="rating">Top Rated</option>
+            <option value="price-asc">Price: Low</option>
+            <option value="price-desc">Price: High</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
 
-// --- Footer ---
-const Footer = () => (
-  <footer className="mt-20 bg-zinc-50">
-    <Container>
-      <div className="grid gap-10 py-12 md:grid-cols-4">
-        <div className="space-y-4">
-          <Logo />
-          <p className="text-sm text-zinc-600">A boutique marketplace for premium vintage. Curated weekly drops from trusted collectors.</p>
+  <main class="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
+    <div class="mt-8 flex gap-8">
+      <!-- SIDEBAR FILTERS -->
+      <aside id="filters" class="hidden lg:block sticky top-28 h-[calc(100vh-8rem)] w-72 shrink-0 overflow-y-auto rounded-2xl border p-5">
+        <h3 class="mb-4 font-medium">Filters</h3>
+        <div class="mb-6">
+          <div class="mb-2 text-sm">Max Price: <span id="priceValue" class="font-medium">$220</span></div>
+          <input id="price" type="range" min="40" max="300" step="5" value="220" class="w-full" />
+        </div>
+        <details class="mb-4" open>
+          <summary class="cursor-pointer text-sm font-medium">Sizes</summary>
+          <div class="mt-2 flex flex-wrap gap-2">
+            ["XS","S","M","L","XL","XXL"].forEach?.call([], ()=>{})
+          </div>
+          <div class="mt-2 grid grid-cols-3 gap-2" id="sizeGroup"></div>
+        </details>
+        <details class="mb-4" open>
+          <summary class="cursor-pointer text-sm font-medium">Colors</summary>
+          <div class="mt-2 grid grid-cols-2 gap-2" id="colorGroup"></div>
+        </details>
+      </aside>
+
+      <!-- GRID -->
+      <section class="flex-1">
+        <div id="count" class="mb-4 text-sm text-neutral-600">0 items</div>
+        <div id="grid" class="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="mt-20 bg-neutral-50">
+    <div class="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
+      <div class="grid gap-10 py-12 md:grid-cols-4">
+        <div class="space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="h-8 w-8 rounded-xl bg-gradient-to-br from-neutral-200 to-neutral-50 shadow-inner ring-1 ring-white/40"></div>
+            <span class="font-serif text-xl tracking-wide">Veluxe Vintage</span>
+          </div>
+          <p class="text-sm text-neutral-600">A boutique marketplace for premium vintage. Curated weekly drops from trusted collectors.</p>
         </div>
         <div>
-          <h4 className="mb-3 font-medium">Shop</h4>
-          <ul className="space-y-2 text-sm text-zinc-600">
-            <li><a href="#" className="hover:underline">New Arrivals</a></li>
-            <li><a href="#" className="hover:underline">Best Sellers</a></li>
-            <li><a href="#" className="hover:underline">Last Chance</a></li>
+          <h4 class="mb-3 font-medium">Shop</h4>
+          <ul class="space-y-2 text-sm text-neutral-600">
+            <li><a href="#" class="hover:underline">New Arrivals</a></li>
+            <li><a href="#" class="hover:underline">Best Sellers</a></li>
+            <li><a href="#" class="hover:underline">Last Chance</a></li>
           </ul>
         </div>
         <div>
-          <h4 className="mb-3 font-medium">Support</h4>
-          <ul className="space-y-2 text-sm text-zinc-600">
-            <li><a href="#" className="hover:underline">Shipping & Returns</a></li>
-            <li><a href="#" className="hover:underline">Sizing Guide</a></li>
-            <li><a href="#" className="hover:underline">Contact</a></li>
+          <h4 class="mb-3 font-medium">Support</h4>
+          <ul class="space-y-2 text-sm text-neutral-600">
+            <li><a href="#" class="hover:underline">Shipping & Returns</a></li>
+            <li><a href="#" class="hover:underline">Sizing Guide</a></li>
+            <li><a href="#" class="hover:underline">Contact</a></li>
           </ul>
         </div>
         <div>
-          <h4 className="mb-3 font-medium">Newsletter</h4>
-          <div className="flex gap-2">
-            <Input placeholder="Email address" className="rounded-2xl"/>
-            <Button className="rounded-2xl">Join</Button>
+          <h4 class="mb-3 font-medium">Newsletter</h4>
+          <div class="flex gap-2">
+            <input placeholder="Email address" class="w-full rounded-2xl border px-3 py-2"/>
+            <button class="rounded-2xl bg-black px-4 py-2 text-white">Join</button>
           </div>
-          <p className="mt-2 text-xs text-zinc-500">By subscribing, you agree to our Privacy Policy.</p>
+          <p class="mt-2 text-xs text-neutral-500">By subscribing, you agree to our Privacy Policy.</p>
         </div>
       </div>
-      <div className="flex items-center justify-between border-t py-6 text-xs text-zinc-500">
-        <p>© {new Date().getFullYear()} Veluxe Vintage</p>
-        <div className="flex gap-4">
+      <div class="flex items-center justify-between border-t py-6 text-xs text-neutral-500">
+        <p>© <span id="year"></span> Veluxe Vintage</p>
+        <div class="flex gap-4">
           <a href="#">Terms</a>
           <a href="#">Privacy</a>
           <a href="#">Cookies</a>
         </div>
       </div>
-    </Container>
+    </div>
   </footer>
-);
 
-// --- Main Page ---
-export default function PremiumVintageSite() {
-  const [filtersOpen, setFiltersOpen] = useState(false);
-  const [price, setPrice] = useState([220]);
-  const [selected, setSelected] = useState({ categories: new Set(), sizes: new Set(), colors: new Set() });
-  const [activeTab, setActiveTab] = useState("featured");
-  const [query, setQuery] = useState("");
+  <!-- QUICK STYLES -->
+  <style>
+    .chip { @apply rounded-2xl border px-3 py-1.5; }
+    .chip.active { @apply bg-black text-white border-black; }
+    .btn { @apply rounded-2xl border px-3 py-2; }
+  </style>
 
-  const filtered = useMemo(() => {
-    return PRODUCTS.filter(p =>
-      p.price <= price[0] &&
-      (selected.categories.size ? selected.categories.has(p.category) : true) &&
-      (selected.sizes.size ? selected.sizes.has(p.size) : true) &&
-      (selected.colors.size ? selected.colors.has(p.color) : true) &&
-      (query.trim() ? p.title.toLowerCase().includes(query.toLowerCase()) : true)
-    );
-  }, [price, selected, query]);
+  <!-- DATA + LOGIC -->
+  <script>
+    const CATEGORIES = ["new-arrivals","outerwear","denim","tees","accessories"];
+    const SIZES = ["XS","S","M","L","XL","XXL"];
+    const COLORS = ["Black","White","Cream","Navy","Olive","Burgundy"];
+    const PRODUCTS = Array.from({ length: 12 }).map((_, i) => ({
+      id: `p-${i+1}`,
+      title: [
+        "Vintage Varsity Jacket",
+        "90s Band Graphic Tee",
+        "Selvedge Denim Jeans",
+        "Wool Overcoat",
+        "Corduroy Overshirt",
+        "Leather Biker Jacket",
+        "Herringbone Blazer",
+        "Cable Knit Sweater",
+        "Carpenter Denim",
+        "Suede Bomber",
+        "Oxford Button-Down",
+        "Workwear Chore Coat",
+      ][i % 12],
+      price: [98,69,140,220,115,260,185,120,130,210,85,165][i % 12],
+      was:   [0,0,0,260,0,320,0,0,0,260,0,0][i % 12],
+      rating:[4.6,4.8,4.4,4.9,4.3,4.7,4.6,4.5,4.2,4.7,4.3,4.5][i % 12],
+      category: CATEGORIES[i % CATEGORIES.length],
+      color: COLORS[i % COLORS.length],
+      size:  SIZES[i % SIZES.length],
+      image: `https://picsum.photos/seed/vintage-${i+1}/800/1000`,
+      badge: (i%5===0?"Limited":(i%3===0?"New":null))
+    }));
 
-  const sorted = useMemo(() => {
-    switch (activeTab) {
-      case "featured":
-        return [...filtered].sort((a, b) => (b.badge ? 1 : 0) - (a.badge ? 1 : 0));
-      case "top-rated":
-        return [...filtered].sort((a, b) => b.rating - a.rating);
-      case "price-low":
-        return [...filtered].sort((a, b) => a.price - b.price);
-      case "price-high":
-        return [...filtered].sort((a, b) => b.price - a.price);
-      default:
-        return filtered;
+    const state = {
+      cat: 'all',
+      q: '',
+      sort: 'featured',
+      maxPrice: 220,
+      sizes: new Set(),
+      colors: new Set(),
+    };
+
+    const els = {
+      grid: document.getElementById('grid'),
+      count: document.getElementById('count'),
+      search: document.getElementById('search'),
+      searchTop: document.getElementById('searchTop'),
+      sort: document.getElementById('sort'),
+      price: document.getElementById('price'),
+      priceValue: document.getElementById('priceValue'),
+      sizeGroup: document.getElementById('sizeGroup'),
+      colorGroup: document.getElementById('colorGroup'),
+      year: document.getElementById('year'),
+      openFilters: document.getElementById('openFilters'),
+      filters: document.getElementById('filters'),
+    };
+
+    // initialize size/color chips
+    SIZES.forEach(s => {
+      const b = document.createElement('button');
+      b.className = 'btn';
+      b.textContent = s;
+      b.onclick = () => { toggleSet(state.sizes, s); render(); };
+      els.sizeGroup.appendChild(b);
+    });
+    COLORS.forEach(c => {
+      const b = document.createElement('button');
+      b.className = 'btn';
+      b.textContent = c;
+      b.onclick = () => { toggleSet(state.colors, c); render(); };
+      els.colorGroup.appendChild(b);
+    });
+
+    // category chips
+    document.querySelectorAll('[data-filtercat]').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('[data-filtercat]').forEach(c=>c.classList.remove('active'));
+        chip.classList.add('active');
+        state.cat = chip.dataset.filtercat;
+        render();
+      });
+    });
+
+    // search boxes
+    [els.search, els.searchTop].forEach(inp => inp && inp.addEventListener('input', (e)=>{
+      state.q = e.target.value.trim().toLowerCase();
+      if (inp === els.searchTop && els.search) els.search.value = e.target.value;
+      if (inp === els.search && els.searchTop) els.searchTop.value = e.target.value;
+      render();
+    }));
+
+    // sort
+    els.sort.addEventListener('change', ()=>{ state.sort = els.sort.value; render(); });
+
+    // price
+    els.price.addEventListener('input', ()=>{ state.maxPrice = Number(els.price.value); els.priceValue.textContent = `$${state.maxPrice}`; render(); });
+
+    // open filters (mobile)
+    els.openFilters.addEventListener('click', ()=>{
+      els.filters.classList.toggle('hidden');
+    });
+
+    // helpers
+    function toggleSet(set, v){ set.has(v) ? set.delete(v) : set.add(v); }
+
+    function filterProducts(){
+      return PRODUCTS.filter(p =>
+        (state.cat==='all' || p.category===state.cat) &&
+        p.price <= state.maxPrice &&
+        (!state.sizes.size || state.sizes.has(p.size)) &&
+        (!state.colors.size || state.colors.has(p.color)) &&
+        (!state.q || p.title.toLowerCase().includes(state.q))
+      );
     }
-  }, [filtered, activeTab]);
 
-  return (
-    <div className="min-h-screen bg-white text-zinc-900">
-      <NavBar onOpenFilters={() => setFiltersOpen(true)} />
-      <Hero />
+    function sortProducts(arr){
+      switch(state.sort){
+        case 'rating': return arr.sort((a,b)=>b.rating-a.rating);
+        case 'price-asc': return arr.sort((a,b)=>a.price-b.price);
+        case 'price-desc': return arr.sort((a,b)=>b.price-a.price);
+        default: return arr; // featured
+      }
+    }
 
-      {/* Promo ribbon */}
-      <div className="sticky top-16 z-40 border-b bg-white/70 backdrop-blur">
-        <Container>
-          <div className="flex items-center justify-between py-2 text-sm">
-            <div className="hidden md:flex items-center gap-2 text-zinc-600">
-              <Sparkles className="h-4 w-4"/>
-              Weekly drops every Friday at 12 PM ET
-            </div>
-            <div className="flex w-full max-w-md items-center gap-2 md:justify-end">
-              <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search vintage gems…" className="rounded-2xl"/>
-              <Button variant="outline" className="rounded-2xl" onClick={() => setFiltersOpen(true)}>
-                <Filter className="mr-2 h-4 w-4"/> Filters
-              </Button>
-            </div>
+    function productCard(p){
+      const was = p.was>0 ? `<span class="ml-2 text-sm text-neutral-500 line-through">$${p.was}</span>` : '';
+      const badge = p.badge ? `<span class="absolute left-3 top-3 rounded-full bg-black/80 px-2 py-1 text-xs text-white">${p.badge}</span>` : '';
+      return `
+        <article class="card overflow-hidden rounded-3xl border-0 bg-white shadow-soft ring-1 ring-black/5">
+          <div class="relative aspect-[3/4] overflow-hidden">
+            <img src="${p.image}" alt="${p.title}" class="h-full w-full object-cover transition-transform duration-300"/>
+            ${badge}
+            <div class="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/40 to-transparent"></div>
           </div>
-        </Container>
-      </div>
-
-      <Container>
-        <div className="mt-8 flex gap-8">
-          <FilterPanel open={filtersOpen} onOpenChange={setFiltersOpen} price={price} setPrice={setPrice} selected={selected} setSelected={setSelected} />
-
-          <div className="flex-1">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <div className="flex items-center justify-between">
-                <TabsList className="rounded-2xl">
-                  <TabsTrigger value="featured">Featured</TabsTrigger>
-                  <TabsTrigger value="top-rated">Top Rated</TabsTrigger>
-                  <TabsTrigger value="price-low">Price: Low</TabsTrigger>
-                  <TabsTrigger value="price-high">Price: High</TabsTrigger>
-                </TabsList>
-                <div className="hidden text-sm text-zinc-600 lg:block">{sorted.length} items</div>
-              </div>
-              <TabsContent value="featured" className="mt-6">
-                <ProductGrid products={sorted} />
-              </TabsContent>
-              <TabsContent value="top-rated" className="mt-6">
-                <ProductGrid products={sorted} />
-              </TabsContent>
-              <TabsContent value="price-low" className="mt-6">
-                <ProductGrid products={sorted} />
-              </TabsContent>
-              <TabsContent value="price-high" className="mt-6">
-                <ProductGrid products={sorted} />
-              </TabsContent>
-            </Tabs>
+          <div class="space-y-1 p-4 pb-0">
+            <h3 class="truncate font-medium">${p.title}</h3>
+            <div class="text-sm text-neutral-600">${p.color} · ${p.size}</div>
           </div>
-        </div>
-      </Container>
+          <div class="p-4 pt-2">
+            <div class="flex items-baseline gap-2">
+              <div class="text-lg font-semibold tracking-tight">$${p.price}</div>
+              ${was}
+            </div>
+            <button class="mt-3 w-full rounded-2xl bg-black px-3 py-2 text-white">Add to bag</button>
+          </div>
+        </article>`;
+    }
 
-      <Footer />
-    </div>
-  );
-}
+    function render(){
+      const data = sortProducts(filterProducts());
+      els.count.textContent = `${data.length} item${data.length!==1?'s':''}`;
+      els.grid.innerHTML = data.map(productCard).join('');
+    }
 
-function ProductGrid({ products }) {
-  if (!products.length) {
-    return (
-      <div className="flex h-40 items-center justify-center rounded-2xl border text-sm text-zinc-600">No items match your filters.</div>
-    );
-  }
-  return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-      {products.map((p) => (
-        <ProductCard key={p.id} product={p} />
-      ))}
-    </div>
-  );
-}
+    els.year.textContent = new Date().getFullYear();
+    render();
+  </script>
+</body>
+</html>
