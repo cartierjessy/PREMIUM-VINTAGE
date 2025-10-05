@@ -5,12 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>G&J Premium Vintage Collection</title>
   <style>
-    /* --- STREETWEAR THEME (no CDN) --- */
     :root{
-      --bg:#0b0b0b; --card:#111; --ink:#fafafa; --muted:#a3a3a3; --line:#222;
-      --accent:#e11d48; /* rose */
-      --accent2:#22c55e; /* green pop */
-      --radius:18px; --shadow:0 18px 60px -20px rgba(0,0,0,.5);
+      --bg:#0b0b0b;--card:#111;--ink:#fafafa;--muted:#a3a3a3;--line:#222;--accent:#e11d48;--accent2:#22c55e;--radius:18px;--shadow:0 18px 60px -20px rgba(0,0,0,.5)
     }
     *{box-sizing:border-box}
     html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:14px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
@@ -18,8 +14,8 @@
     .container{max-width:1180px;margin:0 auto;padding:0 20px}
     .glass{backdrop-filter:saturate(160%) blur(8px);background:rgba(17,17,17,.7)}
     .border{border:1px solid var(--line)}
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{width:34px;height:34px;border-radius:12px;background:conic-gradient(from 210deg,var(--accent),#ef4444,#f59e0b,#eab308,#22c55e,#06b6d4,#8b5cf6,var(--accent)); box-shadow:inset 0 0 0 2px #000}
+    .brand{display:flex;align-items:center;gap:10px}
+    .logo svg{width:34px;height:34px;display:block}
     .headline{font-size:20px;font-weight:800;letter-spacing:.2px;text-transform:uppercase}
     .hstack{display:flex;align-items:center;gap:12px}
     .spacer{flex:1}
@@ -29,39 +25,18 @@
     .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
     .btn.ghost{background:transparent}
     header{position:sticky;top:0;z-index:40;border-bottom:1px solid var(--line)}
-
-    /* HERO */
-    .hero{position:relative;overflow:hidden}
-    .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(800px 400px at 70% -10%,rgba(225,29,72,.25),transparent 60%),radial-gradient(600px 300px at 0% 0%,rgba(34,197,94,.2),transparent 60%)}
-    .hero .wrap{padding:40px 0;text-align:center}
-    .badge{display:inline-block;border:1px dashed var(--line);border-radius:999px;padding:6px 12px;font-size:12px;letter-spacing:.4px;color:var(--muted)}
-    h1{font-size:38px;letter-spacing:.2px;margin:10px 0 12px;text-transform:uppercase}
-    .kicker{color:var(--muted)}
-
-    /* MARQUEE – LED TICKER */
     .ticker{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#020202}
     .ticker .track{display:flex;gap:28px;white-space:nowrap;will-change:transform;animation:scroll 22s linear infinite;padding:10px 0}
-    .led{display:inline-flex;align-items:center;gap:10px;border:1px solid #0d0d0d;border-radius:999px;padding:8px 12px;background:linear-gradient(#0a0a0a,#0d0d0d);position:relative;box-shadow:inset 0 0 0 1px #151515, 0 0 0 1px #050505}
-    .led .lamp{width:8px;height:8px;border-radius:999px;box-shadow:0 0 8px currentColor, 0 0 16px currentColor}
-    .led .txt{font:700 12px/1.1 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;letter-spacing:1px;text-transform:uppercase;text-shadow:0 0 8px currentColor, 0 0 16px currentColor}
-    .led.green{color:#22c55e}
-    .led.red{color:#ef4444}
-    .led.amber{color:#f59e0b}
-    .led.cyan{color:#06b6d4}
-    .ticker:hover .track{animation-play-state:paused}
-    @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-    /* TOOLBAR */
-    .toolbar{position:sticky;top:64px;z-index:30;border-bottom:1px solid var(--line);background:#0e0e0e}
+    .led{display:inline-flex;align-items:center;gap:10px;border:1px solid #0d0d0d;border-radius:999px;padding:8px 12px;background:linear-gradient(#0a0a0a,#0d0d0d);position:relative;box-shadow:inset 0 0 0 1px #151515,0 0 0 1px #050505}
+    .led .lamp{width:8px;height:8px;border-radius:999px;box-shadow:0 0 8px currentColor,0 0 16px currentColor}
+    .led .txt{font:700 12px/1.1 ui-monospace,monospace;letter-spacing:1px;text-transform:uppercase;text-shadow:0 0 8px currentColor,0 0 16px currentColor}
+    .led.green{color:#22c55e}.led.red{color:#ef4444}.led.amber{color:#f59e0b}.led.cyan{color:#06b6d4}
+    .ticker:hover .track{animation-play-state:paused}@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
     .chip{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:#0d0d0d;color:#e5e5e5;cursor:pointer}
     .chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
-
-    /* LAYOUT */
     .layout{display:flex;gap:24px;margin-top:24px}
     aside{position:sticky;top:118px;height:calc(100vh - 150px);overflow:auto;border:1px solid var(--line);border-radius:var(--radius);padding:18px;min-width:260px;background:#0e0e0e}
     .range{width:100%}
-
-    /* GRID */
     .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
     @media(min-width:900px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
     .card{border-radius:20px;overflow:hidden;background:var(--card);box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.04)}
@@ -71,10 +46,7 @@
     .badge2{position:absolute;left:10px;top:10px;background:#111;border:1px solid var(--line);color:#fff;border-radius:999px;padding:4px 10px;font-size:12px}
     .price{font-size:16px;font-weight:800}
     .was{margin-left:8px;color:#9ca3af;text-decoration:line-through}
-
     footer{margin-top:60px;border-top:1px solid var(--line);background:#0e0e0e;color:#d4d4d4}
-
-    /* OWNER modal */
     #owner{position:fixed;inset:0;background:rgba(10,10,10,.96);z-index:60;overflow:auto;display:none}
     #owner.open{display:block}
     table{width:100%;border-collapse:collapse}
@@ -82,10 +54,19 @@
   </style>
 </head>
 <body>
-  <!-- NAV -->
   <header class="glass">
     <div class="container hstack" style="height:64px">
-      <div class="brand"><div class="logo"></div><div class="headline">G&J Premium Vintage Collection</div></div>
+      <div class="brand">
+        <div class="logo">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="96" fill="#000" stroke="#fff" stroke-width="4"/>
+            <text x="55" y="125" font-family="serif" font-size="90" fill="#fff" font-weight="700">G</text>
+            <text x="112" y="125" font-family="serif" font-size="90" fill="#fff" font-weight="700">J</text>
+            <text x="91" y="118" font-family="serif" font-size="40" fill="#fff">&amp;</text>
+          </svg>
+        </div>
+        <div class="headline">G&J Premium Vintage Collection</div>
+      </div>
       <div class="spacer"></div>
       <input id="searchTop" type="search" placeholder="Search drops & brands…" style="min-width:280px" />
       <button id="openOwner" class="btn ghost" title="Owner panel">Owners</button>
@@ -94,12 +75,32 @@
     </div>
   </header>
 
-  <!-- HERO -->
+  <div class="ticker" role="marquee" aria-label="Store highlights and shipping info">
+    <div class="track">
+      <span class="led green"><span class="lamp"></span><span class="txt">Free 2–5 Day Shipping</span></span>
+      <span class="led amber"><span class="lamp"></span><span class="txt">Easy 30-Day Returns</span></span>
+      <span class="led cyan"><span class="lamp"></span><span class="txt">Verified Vintage</span></span>
+      <span class="led red"><span class="lamp"></span><span class="txt">Carbon-Neutral Packaging</span></span>
+      <span class="led green"><span class="lamp"></span><span class="txt">Weekly Drops Friday 12PM ET</span></span>
+      <span class="led amber"><span class="lamp"></span><span class="txt">Limited Quantities</span></span>
+      <span class="led cyan"><span class="lamp"></span><span class="txt">Authenticity Checked</span></span>
+      <span class="led red"><span class="lamp"></span><span class="txt">G&J Premium Vintage</span></span>
+      <span class="led green"><span class="lamp"></span><span class="txt">Free 2–5 Day Shipping</span></span>
+      <span class="led amber"><span class="lamp"></span><span class="txt">Easy 30-Day Returns</span></span>
+      <span class="led cyan"><span class="lamp"></span><span class="txt">Verified Vintage</span></span>
+      <span class="led red"><span class="lamp"></span><span class="txt">Carbon-Neutral Packaging</span></span>
+      <span class="led green"><span class="lamp"></span><span class="txt">Weekly Drops Friday 12PM ET</span></span>
+      <span class="led amber"><span class="lamp"></span><span class="txt">Limited Quantities</span></span>
+      <span class="led cyan"><span class="lamp"></span><span class="txt">Authenticity Checked</span></span>
+      <span class="led red"><span class="lamp"></span><span class="txt">G&J Premium Vintage</span></span>
+    </div>
+  </div>
+
   <section class="hero">
     <div class="container wrap">
       <span class="badge">Curated · Authenticated · Limited Runs</span>
-      <h1>Streetwear‑Driven Vintage</h1>
-      <p class="kicker">Hand‑selected jackets, band tees, denim, and archive pieces. Fresh drops weekly.</p>
+      <h1>Streetwear-Driven Vintage</h1>
+      <p class="kicker">Hand-selected jackets, band tees, denim, and archive pieces. Fresh drops weekly.</p>
       <div class="hstack" style="justify-content:center;margin-top:14px;gap:10px">
         <a href="#grid" class="btn primary">Shop New Drops</a>
         <a href="#grid" class="btn">Explore Collections</a>
@@ -107,31 +108,6 @@
     </div>
   </section>
 
-  <!-- MARQUEE -->
-  <div class="ticker" role="marquee" aria-label="Store highlights and shipping info">
-    <div class="track">
-      <span class="led green"><span class="lamp"></span><span class="txt">Free 2–5 Day Shipping</span></span>
-      <span class="led amber"><span class="lamp"></span><span class="txt">Easy 30‑Day Returns</span></span>
-      <span class="led cyan"><span class="lamp"></span><span class="txt">Verified Vintage</span></span>
-      <span class="led red"><span class="lamp"></span><span class="txt">Carbon‑Neutral Packaging</span></span>
-      <span class="led green"><span class="lamp"></span><span class="txt">Weekly Drops Friday 12PM ET</span></span>
-      <span class="led amber"><span class="lamp"></span><span class="txt">Limited Quantities</span></span>
-      <span class="led cyan"><span class="lamp"></span><span class="txt">Authenticity Checked</span></span>
-      <span class="led red"><span class="lamp"></span><span class="txt">G&J Premium Vintage</span></span>
-      <!-- duplicate for seamless loop -->
-      <span class="led green"><span class="lamp"></span><span class="txt">Free 2–5 Day Shipping</span></span>
-      <span class="led amber"><span class="lamp"></span><span class="txt">Easy 30‑Day Returns</span></span>
-      <span class="led cyan"><span class="lamp"></span><span class="txt">Verified Vintage</span></span>
-      <span class="led red"><span class="lamp"></span><span class="txt">Carbon‑Neutral Packaging</span></span>
-      <span class="led green"><span class="lamp"></span><span class="txt">Weekly Drops Friday 12PM ET</span></span>
-      <span class="led amber"><span class="lamp"></span><span class="txt">Limited Quantities</span></span>
-      <span class="led cyan"><span class="lamp"></span><span class="txt">Authenticity Checked</span></span>
-      <span class="led red"><span class="lamp"></span><span class="txt">G&J Premium Vintage</span></span>
-    </div>
-  </div>
-  </div>
-
-  <!-- TOOLBAR -->
   <div class="toolbar">
     <div class="container hstack" style="padding:10px 0;justify-content:space-between">
       <div class="hstack" id="cats">
@@ -187,7 +163,6 @@
     </div>
   </footer>
 
-  <!-- OWNER PANEL -->
   <section id="owner">
     <div class="container" style="padding:32px 0 60px">
       <div class="hstack" style="justify-content:space-between;margin-bottom:12px">
@@ -233,158 +208,4 @@
             <p class="kicker">CSV columns: <code>title,price,was,rating,category,color,size,image,badge</code></p>
             <div class="hstack" style="flex-wrap:wrap">
               <input id="csvFile" type="file" accept=".csv"/>
-              <input id="jsonFile" type="file" accept="application/json"/>
-            </div>
-            <p class="kicker" style="font-size:12px;margin-top:6px">Data is saved to this browser (localStorage). Export JSON to move to another device.</p>
-          </div>
-        </div>
-
-        <div class="border" style="border-radius:var(--radius);margin-top:16px;overflow:auto;background:#0f0f0f">
-          <table>
-            <thead style="background:#111"><tr><th>Title</th><th>Price</th><th>Category</th><th>Size</th><th>Color</th></tr></thead>
-            <tbody id="invTable"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <script>
-    // --- Data / State ---
-    const SIZES = ["XS","S","M","L","XL","XXL"];
-    const COLORS = ["Black","White","Cream","Navy","Olive","Burgundy"];
-    let PRODUCTS = JSON.parse(localStorage.getItem('gj_inventory') || '[]'); // starts empty
-
-    const state = { cat:'all', q:'', sort:'featured', maxPrice:220, sizes:new Set(), colors:new Set() };
-
-    const els = {
-      grid:document.getElementById('grid'), count:document.getElementById('count'),
-      search:document.getElementById('search'), searchTop:document.getElementById('searchTop'),
-      sort:document.getElementById('sort'), price:document.getElementById('price'), priceValue:document.getElementById('priceValue'),
-      sizeGroup:document.getElementById('sizeGroup'), colorGroup:document.getElementById('colorGroup'),
-      year:document.getElementById('year'), openFilters:document.getElementById('openFilters'), filters:document.getElementById('filters'),
-      cats:document.getElementById('cats'),
-      owner:document.getElementById('owner'), openOwner:document.getElementById('openOwner'), closeOwner:document.getElementById('closeOwner'),
-      adminGate:document.getElementById('adminGate'), adminPanel:document.getElementById('adminPanel'),
-      adminPw:document.getElementById('adminPw'), adminLogin:document.getElementById('adminLogin'), adminLogout:document.getElementById('adminLogout'),
-      addItem:document.getElementById('addItem'), invTable:document.getElementById('invTable'), invCount:document.getElementById('invCount'),
-      csvFile:document.getElementById('csvFile'), jsonFile:document.getElementById('jsonFile'),
-    };
-
-    // --- UI helpers ---
-    function chip(text, on){ const b=document.createElement('button'); b.className='chip'; b.textContent=text; b.onclick=on; return b; }
-    function btn(text, on){ const b=document.createElement('button'); b.className='btn'; b.textContent=text; b.onclick=on; return b; }
-    function toggleSet(set,v){ set.has(v)?set.delete(v):set.add(v); render(); refreshAdmin(); }
-
-    // size/color chips
-    SIZES.forEach(s=> els.sizeGroup.appendChild(btn(s, ()=>toggleSet(state.sizes,s))));
-    COLORS.forEach(c=> els.colorGroup.appendChild(btn(c, ()=>toggleSet(state.colors,c))));
-
-    // category chips
-    els.cats.querySelectorAll('[data-filtercat]').forEach(ch=>{
-      ch.addEventListener('click',()=>{ els.cats.querySelectorAll('.chip').forEach(c=>c.classList.remove('active')); ch.classList.add('active'); state.cat=ch.dataset.filtercat; render(); });
-    });
-
-    // search
-    [els.search, els.searchTop].forEach(inp=> inp && inp.addEventListener('input', e=>{ state.q=e.target.value.toLowerCase(); if(inp===els.search && els.searchTop) els.searchTop.value=e.target.value; if(inp===els.searchTop && els.search) els.search.value=e.target.value; render(); }));
-
-    // sort
-    els.sort.addEventListener('change', ()=>{ state.sort=els.sort.value; render(); });
-
-    // price
-    els.price.addEventListener('input', ()=>{ state.maxPrice=Number(els.price.value); els.priceValue.textContent='$'+state.maxPrice; render(); });
-
-    // open/close owner
-    els.openOwner.addEventListener('click', ()=> els.owner.classList.add('open'));
-    els.closeOwner.addEventListener('click', ()=> els.owner.classList.remove('open'));
-
-    // filters toggle (mobile)
-    els.openFilters.addEventListener('click', ()=> els.filters.style.display = els.filters.style.display==='none'?'block':'none');
-
-    // --- Render ---
-    function filterProducts(){
-      return (PRODUCTS||[]).filter(p=> (
-        (state.cat==='all' || p.category===state.cat) &&
-        (Number(p.price)||0) <= state.maxPrice &&
-        (!state.sizes.size || state.sizes.has(p.size)) &&
-        (!state.colors.size || state.colors.has(p.color)) &&
-        (!state.q || (p.title||'').toLowerCase().includes(state.q))
-      ));
-    }
-    function sortProducts(arr){
-      switch(state.sort){
-        case 'rating': return arr.sort((a,b)=> (Number(b.rating)||0)-(Number(a.rating)||0));
-        case 'price-asc': return arr.sort((a,b)=> (Number(a.price)||0)-(Number(b.price)||0));
-        case 'price-desc': return arr.sort((a,b)=> (Number(b.price)||0)-(Number(a.price)||0));
-        default: return arr;
-      }
-    }
-    function card(p){
-      const was = (Number(p.was)||0)>0 ? `<span class="was">$${p.was}</span>` : '';
-      const img = p.image ? `<img src="${p.image}" alt="${(p.title||'Item')}"/>` : '';
-      const badge = p.badge ? `<span class="badge2">${p.badge}</span>` : '';
-      return `<article class="card">
-        <div class="imgbox">${img}${badge}</div>
-        <div class="pad" style="padding:14px 14px 0">
-          <div style="font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:uppercase">${p.title||'Untitled item'}</div>
-          <div style="color:var(--muted)">${p.color||''}${p.color&&p.size?' · ':''}${p.size||''}</div>
-        </div>
-        <div class="pad" style="padding:10px 14px 14px">
-          <div class="hstack" style="gap:8px;align-items:baseline"><div class="price">$${Number(p.price||0).toFixed(2)}</div>${was}</div>
-          <button class="btn primary" style="margin-top:8px;width:100%">Add to bag</button>
-        </div>
-      </article>`
-    }
-    function render(){
-      const data = sortProducts(filterProducts());
-      els.count.textContent = `${data.length} item${data.length===1?'':'s'}`;
-      els.grid.innerHTML = data.map(card).join('');
-    }
-
-    // --- Owner logic ---
-    const ADMIN_KEY='gj_admin_pw';
-    function isAuthed(){ return sessionStorage.getItem('gj_authed')==='1' && localStorage.getItem(ADMIN_KEY); }
-    function setAuthed(v){ sessionStorage.setItem('gj_authed', v?'1':'0'); }
-    function saveInventory(list){ PRODUCTS = list; localStorage.setItem('gj_inventory', JSON.stringify(PRODUCTS)); render(); refreshAdmin(); }
-
-    function parseCSV(text){
-      const lines = text.trim().split(/\r?\n/); if(!lines.length) return [];
-      const headers = lines.shift().split(',').map(h=>h.trim());
-      return lines.map((ln,i)=>{ const cells = ln.split(','); const o={}; headers.forEach((h,idx)=>o[h]= (cells[idx]||'').trim()); o.id=o.id||`p-${Date.now()}-${i}`; return o;});
-    }
-
-    function refreshGate(){
-      if(isAuthed()){ els.adminGate.style.display='none'; els.adminPanel.style.display='block'; }
-      else { els.adminGate.style.display='block'; els.adminPanel.style.display='none'; }
-    }
-    function refreshAdmin(){
-      if(!els.invTable) return; els.invCount.textContent=(PRODUCTS||[]).length;
-      els.invTable.innerHTML=(PRODUCTS||[]).map(p=>`<tr><td>${p.title||''}</td><td>$${Number(p.price||0).toFixed(2)}</td><td>${p.category||''}</td><td>${p.size||''}</td><td>${p.color||''}</td></tr>`).join('');
-    }
-
-    els.adminLogin.addEventListener('click', ()=>{
-      const saved = localStorage.getItem(ADMIN_KEY)||''; const val = (els.adminPw.value||'').trim();
-      if(!saved){ if(!val){ alert('Create a password first.'); return;} localStorage.setItem(ADMIN_KEY,val); setAuthed(true); }
-      else { if(val===saved) setAuthed(true); else return alert('Wrong password'); }
-      els.adminPw.value=''; refreshGate(); refreshAdmin();
-    });
-    els.adminLogout.addEventListener('click', ()=>{ setAuthed(false); refreshGate(); });
-
-    els.addItem.addEventListener('click', ()=>{
-      const get=id=>document.getElementById(id).value.trim();
-      const item={ id:`p-${Date.now()}`, title:get('f_title'), price:Number(get('f_price')||0), was:Number(get('f_was')||0), rating:Number(get('f_rating')||0)||0, category:get('f_category')||'new-arrivals', color:get('f_color'), size:get('f_size'), image:get('f_image'), badge:get('f_badge') };
-      saveInventory([...(PRODUCTS||[]), item]);
-      ['f_title','f_price','f_was','f_rating','f_category','f_color','f_size','f_image','f_badge'].forEach(id=>document.getElementById(id).value='');
-    });
-
-    els.clearInv.addEventListener('click', ()=>{ if(confirm('Clear all inventory?')) saveInventory([]); });
-
-    els.csvFile.addEventListener('change', e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=> saveInventory(parseCSV(r.result)); r.readAsText(f); e.target.value=''; });
-    els.jsonFile.addEventListener('change', e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const list=JSON.parse(r.result); if(Array.isArray(list)) saveInventory(list); else alert('JSON must be an array of items'); }catch{ alert('Invalid JSON'); } }; r.readAsText(f); e.target.value=''; });
-
-    // init
-    document.getElementById('year')?.textContent = new Date().getFullYear();
-    render(); refreshAdmin(); refreshGate();
-  </script>
-</body>
-</html>
+              <input id="jsonFile" type="file" accept
