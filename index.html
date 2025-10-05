@@ -3,333 +3,340 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Veluxe Vintage – Premium</title>
-  <!-- Tailwind CDN (no build tools needed) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { serif: ['"Playfair Display"', 'ui-serif', 'Georgia'] },
-          boxShadow: { soft: '0 10px 30px -12px rgba(0,0,0,.15)' },
-        }
-      }
-    }
-  </script>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>G&J Premium Vintage Collection</title>
   <style>
-    html { font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji" }
-    .glass { backdrop-filter: saturate(150%) blur(8px); background: rgba(255,255,255,.7); }
-    .card:hover img { transform: scale(1.03); }
+    :root{
+      --bg:#ffffff;--text:#111;--muted:#6b7280;--line:#e5e7eb;--ink:#000;--pill:#f8f8f8;
+      --radius:16px;--radius-lg:22px;--shadow:0 10px 30px -12px rgba(0,0,0,.15)
+    }
+    *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font:14px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1120px;margin:0 auto;padding:0 20px}
+    .glass{backdrop-filter:saturate(150%) blur(8px);background:rgba(255,255,255,.75)}
+    header{position:sticky;top:0;z-index:40;border-bottom:1px solid var(--line)}
+    .hstack{display:flex;align-items:center;gap:12px}
+    .spacer{flex:1}
+    .brand{display:flex;align-items:center;gap:10px}
+    .logo{width:32px;height:32px;border-radius:12px;background:linear-gradient(135deg,#e7e7e7,#fff);box-shadow:inset 0 0 0 1px #fff}
+    .headline{font-size:28px;font-weight:650}
+    input[type="search"],input[type="text"],input[type="number"],input[type="password"],select{border:1px solid var(--line);border-radius:16px;padding:10px 12px;outline:none}
+    input:focus,select:focus{box-shadow:0 0 0 2px rgba(0,0,0,.08)}
+    .btn{border:1px solid var(--line);border-radius:16px;padding:10px 14px;background:#fff;cursor:pointer}
+    .btn.primary{background:#000;color:#fff;border-color:#000}
+    .btn.block{width:100%}
+    .hero{position:relative;overflow:hidden}
+    .hero::before{content:"";position:absolute;inset:-20% -10% auto -10%;height:320px;background:radial-gradient(1200px 600px at 50% -20%,rgba(0,0,0,.08),transparent 60%);z-index:-1}
+    .hero .wrap{padding:48px 0;text-align:center}
+    .badge{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:12px}
+    h1{font-size:36px;margin:10px 0 8px}
+    .muted{color:var(--muted)}
+    .pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:var(--pill)}
+    .toolbar{position:sticky;top:64px;z-index:30;border-bottom:1px solid var(--line)}
+    .chip{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:#fff;cursor:pointer}
+    .chip.active{background:#000;color:#fff;border-color:#000}
+    .layout{display:flex;gap:24px;margin-top:24px}
+    aside{position:sticky;top:110px;height:calc(100vh - 140px);overflow:auto;border:1px solid var(--line);border-radius:var(--radius);padding:20px;min-width:260px}
+    .range{width:100%}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    @media(min-width:900px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+    .card{border-radius:22px;overflow:hidden;background:#fff;box-shadow:var(--shadow);border:1px solid rgba(0,0,0,.05)}
+    .imgbox{position:relative;aspect-ratio:3/4;background:#f2f2f2}
+    .imgbox img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
+    .card:hover .imgbox img{transform:scale(1.03)}
+    .card .pad{padding:14px}
+    footer{margin-top:60px;background:#fafafa;border-top:1px solid var(--line)}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left}
+    /* Owner modal */
+    #owner{position:fixed;inset:0;background:rgba(255,255,255,.96);z-index:60;overflow:auto;display:none}
+    #owner.open{display:block}
   </style>
 </head>
-<body class="bg-white text-neutral-900">
+<body>
   <!-- NAV -->
-  <header class="sticky top-0 z-40 border-b glass">
-    <div class="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
-      <div class="flex h-16 items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="h-8 w-8 rounded-xl bg-gradient-to-br from-neutral-200 to-neutral-50 shadow-inner ring-1 ring-white/40"></div>
-          <span class="font-serif text-xl tracking-wide">Veluxe Vintage</span>
-        </div>
-        <div class="hidden md:block w-full max-w-lg">
-          <label class="relative block">
-            <input id="searchTop" type="search" placeholder="Search vintage gems…" class="w-full rounded-2xl border px-4 py-2 pr-11 outline-none focus:ring-2 focus:ring-black/10">
-            <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-neutral-500">⌘K</span>
-          </label>
-        </div>
-        <div class="flex items-center gap-2 text-sm">
-          <button id="openFilters" class="rounded-xl border px-3 py-2 hover:bg-neutral-50">Filters</button>
-          <button class="rounded-xl border px-3 py-2 hover:bg-neutral-50">Bag (0)</button>
-        </div>
-      </div>
+  <header class="glass">
+    <div class="container hstack" style="height:64px">
+      <div class="brand"><div class="logo"></div><div class="headline">G&J Premium Vintage Collection</div></div>
+      <div class="spacer"></div>
+      <input id="searchTop" type="search" placeholder="Search vintage gems…" style="min-width:280px" />
+      <button id="openOwner" class="btn" title="Owner panel">Owners</button>
+      <button id="openFilters" class="btn">Filters</button>
+      <button class="btn">Bag (0)</button>
     </div>
   </header>
 
   <!-- HERO -->
-  <section class="relative overflow-hidden">
-    <div class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(1200px_600px_at_50%_-20%,rgba(0,0,0,0.08),transparent_60%)]"></div>
-    <div class="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
-      <div class="flex flex-col items-center gap-6 py-14 text-center md:py-20">
-        <span class="rounded-full border px-3 py-1 text-xs">Curated & Authenticated</span>
-        <h1 class="max-w-3xl font-serif text-4xl md:text-5xl">Premium Vintage with a Modern Edge</h1>
-        <p class="max-w-2xl text-neutral-600">Hand‑picked pieces with impeccable provenance. Limited runs, boutique quality, and a smoother‑than‑Shopify flow.</p>
-        <div class="flex gap-3">
-          <a href="#grid" class="rounded-2xl bg-black px-5 py-2 text-white">Shop New Drops</a>
-          <a href="#grid" class="rounded-2xl border px-5 py-2">Explore Collections</a>
-        </div>
-        <div class="grid w-full max-w-5xl grid-cols-2 gap-2 md:grid-cols-4 text-sm text-neutral-600">
-          <div class="rounded-2xl border p-3">Free 2–5 day shipping</div>
-          <div class="rounded-2xl border p-3">Carbon‑neutral packaging</div>
-          <div class="rounded-2xl border p-3">Easy 30‑day returns</div>
-          <div class="rounded-2xl border p-3">Verified vintage</div>
-        </div>
+  <section class="hero">
+    <div class="container wrap">
+      <div class="badge">Curated & Authenticated</div>
+      <h1>Premium Vintage with a Modern Edge</h1>
+      <p class="muted">Hand‑picked pieces with impeccable provenance. Limited runs, boutique quality, and a smooth shopping flow.</p>
+      <div style="margin-top:12px">
+        <a href="#grid" class="btn primary">Shop New Drops</a>
+        <a href="#grid" class="btn">Explore Collections</a>
+      </div>
+      <div class="hstack" style="flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px">
+        <span class="pill">Free 2–5 day shipping</span>
+        <span class="pill">Carbon‑neutral packaging</span>
+        <span class="pill">Easy 30‑day returns</span>
+        <span class="pill">Verified vintage</span>
       </div>
     </div>
   </section>
 
   <!-- TOOLBAR -->
-  <div class="sticky top-16 z-30 border-b bg-white/80 glass">
-    <div class="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
-      <div class="flex flex-col gap-3 py-3 md:flex-row md:items-center md:justify-between">
-        <div class="flex gap-2 text-sm">
-          <button data-filtercat="all" class="chip active">All</button>
-          <button data-filtercat="outerwear" class="chip">Outerwear</button>
-          <button data-filtercat="denim" class="chip">Denim</button>
-          <button data-filtercat="tees" class="chip">Graphic Tees</button>
-          <button data-filtercat="accessories" class="chip">Accessories</button>
-        </div>
-        <div class="flex items-center gap-2">
-          <input id="search" placeholder="Search…" class="rounded-2xl border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black/10" />
-          <select id="sort" class="rounded-2xl border px-3 py-2 text-sm">
-            <option value="featured">Featured</option>
-            <option value="rating">Top Rated</option>
-            <option value="price-asc">Price: Low</option>
-            <option value="price-desc">Price: High</option>
-          </select>
-        </div>
+  <div class="toolbar glass">
+    <div class="container hstack" style="padding:10px 0;justify-content:space-between">
+      <div class="hstack" id="cats">
+        <button class="chip active" data-filtercat="all">All</button>
+        <button class="chip" data-filtercat="outerwear">Outerwear</button>
+        <button class="chip" data-filtercat="denim">Denim</button>
+        <button class="chip" data-filtercat="tees">Graphic Tees</button>
+        <button class="chip" data-filtercat="accessories">Accessories</button>
+      </div>
+      <div class="hstack">
+        <input id="search" placeholder="Search…" />
+        <select id="sort">
+          <option value="featured">Featured</option>
+          <option value="rating">Top Rated</option>
+          <option value="price-asc">Price: Low</option>
+          <option value="price-desc">Price: High</option>
+        </select>
       </div>
     </div>
   </div>
 
-  <main class="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
-    <div class="mt-8 flex gap-8">
-      <!-- SIDEBAR FILTERS -->
-      <aside id="filters" class="hidden lg:block sticky top-28 h-[calc(100vh-8rem)] w-72 shrink-0 overflow-y-auto rounded-2xl border p-5">
-        <h3 class="mb-4 font-medium">Filters</h3>
-        <div class="mb-6">
-          <div class="mb-2 text-sm">Max Price: <span id="priceValue" class="font-medium">$220</span></div>
-          <input id="price" type="range" min="40" max="300" step="5" value="220" class="w-full" />
+  <main class="container">
+    <div class="layout">
+      <aside id="filters">
+        <h3>Filters</h3>
+        <div style="margin:12px 0">
+          <div class="muted">Max Price: <b id="priceValue">$220</b></div>
+          <input id="price" class="range" type="range" min="40" max="300" step="5" value="220" />
         </div>
-        <details class="mb-4" open>
-          <summary class="cursor-pointer text-sm font-medium">Sizes</summary>
-          <div class="mt-2 flex flex-wrap gap-2">
-            ["XS","S","M","L","XL","XXL"].forEach?.call([], ()=>{})
-          </div>
-          <div class="mt-2 grid grid-cols-3 gap-2" id="sizeGroup"></div>
+        <details open>
+          <summary>Sizes</summary>
+          <div id="sizeGroup" class="hstack" style="flex-wrap:wrap;margin-top:8px"></div>
         </details>
-        <details class="mb-4" open>
-          <summary class="cursor-pointer text-sm font-medium">Colors</summary>
-          <div class="mt-2 grid grid-cols-2 gap-2" id="colorGroup"></div>
+        <details open style="margin-top:12px">
+          <summary>Colors</summary>
+          <div id="colorGroup" class="hstack" style="flex-wrap:wrap;margin-top:8px"></div>
         </details>
       </aside>
 
-      <!-- GRID -->
-      <section class="flex-1">
-        <div id="count" class="mb-4 text-sm text-neutral-600">0 items</div>
-        <div id="grid" class="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"></div>
+      <section style="flex:1">
+        <div id="count" class="muted" style="margin-bottom:8px">0 items</div>
+        <div id="grid" class="grid"></div>
       </section>
     </div>
   </main>
 
-  <!-- FOOTER -->
-  <footer class="mt-20 bg-neutral-50">
-    <div class="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
-      <div class="grid gap-10 py-12 md:grid-cols-4">
-        <div class="space-y-4">
-          <div class="flex items-center gap-3">
-            <div class="h-8 w-8 rounded-xl bg-gradient-to-br from-neutral-200 to-neutral-50 shadow-inner ring-1 ring-white/40"></div>
-            <span class="font-serif text-xl tracking-wide">Veluxe Vintage</span>
-          </div>
-          <p class="text-sm text-neutral-600">A boutique marketplace for premium vintage. Curated weekly drops from trusted collectors.</p>
-        </div>
-        <div>
-          <h4 class="mb-3 font-medium">Shop</h4>
-          <ul class="space-y-2 text-sm text-neutral-600">
-            <li><a href="#" class="hover:underline">New Arrivals</a></li>
-            <li><a href="#" class="hover:underline">Best Sellers</a></li>
-            <li><a href="#" class="hover:underline">Last Chance</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="mb-3 font-medium">Support</h4>
-          <ul class="space-y-2 text-sm text-neutral-600">
-            <li><a href="#" class="hover:underline">Shipping & Returns</a></li>
-            <li><a href="#" class="hover:underline">Sizing Guide</a></li>
-            <li><a href="#" class="hover:underline">Contact</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="mb-3 font-medium">Newsletter</h4>
-          <div class="flex gap-2">
-            <input placeholder="Email address" class="w-full rounded-2xl border px-3 py-2"/>
-            <button class="rounded-2xl bg-black px-4 py-2 text-white">Join</button>
-          </div>
-          <p class="mt-2 text-xs text-neutral-500">By subscribing, you agree to our Privacy Policy.</p>
-        </div>
-      </div>
-      <div class="flex items-center justify-between border-t py-6 text-xs text-neutral-500">
-        <p>© <span id="year"></span> Veluxe Vintage</p>
-        <div class="flex gap-4">
-          <a href="#">Terms</a>
-          <a href="#">Privacy</a>
-          <a href="#">Cookies</a>
-        </div>
+  <footer>
+    <div class="container" style="padding:22px 0">
+      <div class="hstack" style="justify-content:space-between">
+        <div class="muted">© <span id="year"></span> G&J Premium Vintage Collection</div>
+        <div class="hstack muted" style="gap:16px"><a href="#">Terms</a><a href="#">Privacy</a><a href="#">Cookies</a></div>
       </div>
     </div>
   </footer>
 
-  <!-- QUICK STYLES -->
-  <style>
-    .chip { @apply rounded-2xl border px-3 py-1.5; }
-    .chip.active { @apply bg-black text-white border-black; }
-    .btn { @apply rounded-2xl border px-3 py-2; }
-  </style>
+  <!-- OWNER PANEL (hashless modal) -->
+  <section id="owner">
+    <div class="container" style="padding:32px 0 60px">
+      <div class="hstack" style="justify-content:space-between;margin-bottom:12px">
+        <h2 style="font-size:28px">Owner Panel — G&J Premium Vintage Collection</h2>
+        <button id="closeOwner" class="btn">Close</button>
+      </div>
 
-  <!-- DATA + LOGIC -->
+      <div id="adminGate" style="border:1px solid var(--line);border-radius:var(--radius);padding:16px">
+        <p class="muted" style="margin:0 0 8px">Enter owner password. On first use, this sets the password (stored only in this browser).</p>
+        <div class="hstack"><input id="adminPw" type="password" placeholder="Owner password" class="spacer"/><button id="adminLogin" class="btn primary">Enter</button></div>
+        <p class="muted" style="font-size:12px;margin-top:8px">For multi-user security, add a real backend later.</p>
+      </div>
+
+      <div id="adminPanel" style="display:none">
+        <div class="hstack" style="justify-content:space-between;margin:14px 0">
+          <div class="muted">Inventory items: <b id="invCount"></b></div>
+          <div class="hstack">
+            <button id="exportJSON" class="btn">Export JSON</button>
+            <button id="clearInv" class="btn">Clear All</button>
+            <button id="adminLogout" class="btn">Log out</button>
+          </div>
+        </div>
+
+        <div class="layout" style="margin-top:0">
+          <div style="border:1px solid var(--line);border-radius:var(--radius);padding:16px;min-width:320px">
+            <h3>Add Single Item</h3>
+            <div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:8px">
+              <input id="f_title" placeholder="Title" style="grid-column:1/3"/>
+              <input id="f_price" type="number" step="0.01" placeholder="Price"/>
+              <input id="f_was" type="number" step="0.01" placeholder="Was (optional)"/>
+              <input id="f_rating" type="number" step="0.1" placeholder="Rating (0-5)"/>
+              <input id="f_category" placeholder="Category (e.g., denim)"/>
+              <input id="f_color" placeholder="Color"/>
+              <input id="f_size" placeholder="Size"/>
+              <input id="f_image" placeholder="Image URL" style="grid-column:1/3"/>
+              <input id="f_badge" placeholder="Badge (New/Limited)" style="grid-column:1/3"/>
+            </div>
+            <button id="addItem" class="btn primary block" style="margin-top:10px">Add Item</button>
+          </div>
+
+          <div style="border:1px solid var(--line);border-radius:var(--radius);padding:16px;flex:1">
+            <h3>Bulk Import</h3>
+            <p class="muted">CSV columns: <code>title,price,was,rating,category,color,size,image,badge</code></p>
+            <div class="hstack" style="flex-wrap:wrap">
+              <input id="csvFile" type="file" accept=".csv"/>
+              <input id="jsonFile" type="file" accept="application/json"/>
+            </div>
+            <p class="muted" style="font-size:12px;margin-top:6px">Data is saved to this browser (localStorage). Export JSON to move to another device.</p>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--line);border-radius:var(--radius);margin-top:16px;overflow:auto">
+          <table>
+            <thead style="background:#fafafa"><tr><th>Title</th><th>Price</th><th>Category</th><th>Size</th><th>Color</th></tr></thead>
+            <tbody id="invTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <script>
-    const CATEGORIES = ["new-arrivals","outerwear","denim","tees","accessories"];
+    // --- Data / State ---
     const SIZES = ["XS","S","M","L","XL","XXL"];
     const COLORS = ["Black","White","Cream","Navy","Olive","Burgundy"];
-    const PRODUCTS = Array.from({ length: 12 }).map((_, i) => ({
-      id: `p-${i+1}`,
-      title: [
-        "Vintage Varsity Jacket",
-        "90s Band Graphic Tee",
-        "Selvedge Denim Jeans",
-        "Wool Overcoat",
-        "Corduroy Overshirt",
-        "Leather Biker Jacket",
-        "Herringbone Blazer",
-        "Cable Knit Sweater",
-        "Carpenter Denim",
-        "Suede Bomber",
-        "Oxford Button-Down",
-        "Workwear Chore Coat",
-      ][i % 12],
-      price: [98,69,140,220,115,260,185,120,130,210,85,165][i % 12],
-      was:   [0,0,0,260,0,320,0,0,0,260,0,0][i % 12],
-      rating:[4.6,4.8,4.4,4.9,4.3,4.7,4.6,4.5,4.2,4.7,4.3,4.5][i % 12],
-      category: CATEGORIES[i % CATEGORIES.length],
-      color: COLORS[i % COLORS.length],
-      size:  SIZES[i % SIZES.length],
-      image: `https://picsum.photos/seed/vintage-${i+1}/800/1000`,
-      badge: (i%5===0?"Limited":(i%3===0?"New":null))
-    }));
+    let PRODUCTS = JSON.parse(localStorage.getItem('gj_inventory') || '[]'); // starts empty
 
-    const state = {
-      cat: 'all',
-      q: '',
-      sort: 'featured',
-      maxPrice: 220,
-      sizes: new Set(),
-      colors: new Set(),
-    };
+    const state = { cat:'all', q:'', sort:'featured', maxPrice:220, sizes:new Set(), colors:new Set() };
 
     const els = {
-      grid: document.getElementById('grid'),
-      count: document.getElementById('count'),
-      search: document.getElementById('search'),
-      searchTop: document.getElementById('searchTop'),
-      sort: document.getElementById('sort'),
-      price: document.getElementById('price'),
-      priceValue: document.getElementById('priceValue'),
-      sizeGroup: document.getElementById('sizeGroup'),
-      colorGroup: document.getElementById('colorGroup'),
-      year: document.getElementById('year'),
-      openFilters: document.getElementById('openFilters'),
-      filters: document.getElementById('filters'),
+      grid:document.getElementById('grid'), count:document.getElementById('count'),
+      search:document.getElementById('search'), searchTop:document.getElementById('searchTop'),
+      sort:document.getElementById('sort'), price:document.getElementById('price'), priceValue:document.getElementById('priceValue'),
+      sizeGroup:document.getElementById('sizeGroup'), colorGroup:document.getElementById('colorGroup'),
+      year:document.getElementById('year'), openFilters:document.getElementById('openFilters'), filters:document.getElementById('filters'),
+      cats:document.getElementById('cats'),
+      owner:document.getElementById('owner'), openOwner:document.getElementById('openOwner'), closeOwner:document.getElementById('closeOwner'),
+      adminGate:document.getElementById('adminGate'), adminPanel:document.getElementById('adminPanel'),
+      adminPw:document.getElementById('adminPw'), adminLogin:document.getElementById('adminLogin'), adminLogout:document.getElementById('adminLogout'),
+      addItem:document.getElementById('addItem'), invTable:document.getElementById('invTable'), invCount:document.getElementById('invCount'),
+      csvFile:document.getElementById('csvFile'), jsonFile:document.getElementById('jsonFile'),
     };
 
-    // initialize size/color chips
-    SIZES.forEach(s => {
-      const b = document.createElement('button');
-      b.className = 'btn';
-      b.textContent = s;
-      b.onclick = () => { toggleSet(state.sizes, s); render(); };
-      els.sizeGroup.appendChild(b);
-    });
-    COLORS.forEach(c => {
-      const b = document.createElement('button');
-      b.className = 'btn';
-      b.textContent = c;
-      b.onclick = () => { toggleSet(state.colors, c); render(); };
-      els.colorGroup.appendChild(b);
-    });
+    // --- UI helpers ---
+    function chip(text, on){ const b=document.createElement('button'); b.className='btn'; b.textContent=text; b.onclick=on; return b; }
+    function toggleSet(set,v){ set.has(v)?set.delete(v):set.add(v); render(); refreshAdmin(); }
+
+    // size/color chips
+    SIZES.forEach(s=> els.sizeGroup.appendChild(chip(s, ()=>toggleSet(state.sizes,s))));
+    COLORS.forEach(c=> els.colorGroup.appendChild(chip(c, ()=>toggleSet(state.colors,c))));
 
     // category chips
-    document.querySelectorAll('[data-filtercat]').forEach(chip => {
-      chip.addEventListener('click', () => {
-        document.querySelectorAll('[data-filtercat]').forEach(c=>c.classList.remove('active'));
-        chip.classList.add('active');
-        state.cat = chip.dataset.filtercat;
-        render();
-      });
+    els.cats.querySelectorAll('[data-filtercat]').forEach(ch=>{
+      ch.addEventListener('click',()=>{ els.cats.querySelectorAll('.chip').forEach(c=>c.classList.remove('active')); ch.classList.add('active'); state.cat=ch.dataset.filtercat; render(); });
     });
 
-    // search boxes
-    [els.search, els.searchTop].forEach(inp => inp && inp.addEventListener('input', (e)=>{
-      state.q = e.target.value.trim().toLowerCase();
-      if (inp === els.searchTop && els.search) els.search.value = e.target.value;
-      if (inp === els.search && els.searchTop) els.searchTop.value = e.target.value;
-      render();
-    }));
+    // search
+    [els.search, els.searchTop].forEach(inp=> inp && inp.addEventListener('input', e=>{ state.q=e.target.value.toLowerCase(); if(inp===els.search && els.searchTop) els.searchTop.value=e.target.value; if(inp===els.searchTop && els.search) els.search.value=e.target.value; render(); }));
 
     // sort
-    els.sort.addEventListener('change', ()=>{ state.sort = els.sort.value; render(); });
+    els.sort.addEventListener('change', ()=>{ state.sort=els.sort.value; render(); });
 
     // price
-    els.price.addEventListener('input', ()=>{ state.maxPrice = Number(els.price.value); els.priceValue.textContent = `$${state.maxPrice}`; render(); });
+    els.price.addEventListener('input', ()=>{ state.maxPrice=Number(els.price.value); els.priceValue.textContent='$'+state.maxPrice; render(); });
 
-    // open filters (mobile)
-    els.openFilters.addEventListener('click', ()=>{
-      els.filters.classList.toggle('hidden');
-    });
+    // open/close owner
+    els.openOwner.addEventListener('click', ()=> els.owner.classList.add('open'));
+    els.closeOwner.addEventListener('click', ()=> els.owner.classList.remove('open'));
 
-    // helpers
-    function toggleSet(set, v){ set.has(v) ? set.delete(v) : set.add(v); }
+    // filters toggle (mobile)
+    els.openFilters.addEventListener('click', ()=> els.filters.style.display = els.filters.style.display==='none'?'block':'none');
 
+    // --- Render ---
     function filterProducts(){
-      return PRODUCTS.filter(p =>
+      return (PRODUCTS||[]).filter(p=> (
         (state.cat==='all' || p.category===state.cat) &&
-        p.price <= state.maxPrice &&
+        (Number(p.price)||0) <= state.maxPrice &&
         (!state.sizes.size || state.sizes.has(p.size)) &&
         (!state.colors.size || state.colors.has(p.color)) &&
-        (!state.q || p.title.toLowerCase().includes(state.q))
-      );
+        (!state.q || (p.title||'').toLowerCase().includes(state.q))
+      ));
     }
-
     function sortProducts(arr){
       switch(state.sort){
-        case 'rating': return arr.sort((a,b)=>b.rating-a.rating);
-        case 'price-asc': return arr.sort((a,b)=>a.price-b.price);
-        case 'price-desc': return arr.sort((a,b)=>b.price-a.price);
-        default: return arr; // featured
+        case 'rating': return arr.sort((a,b)=> (Number(b.rating)||0)-(Number(a.rating)||0));
+        case 'price-asc': return arr.sort((a,b)=> (Number(a.price)||0)-(Number(b.price)||0));
+        case 'price-desc': return arr.sort((a,b)=> (Number(b.price)||0)-(Number(a.price)||0));
+        default: return arr;
       }
     }
-
-    function productCard(p){
-      const was = p.was>0 ? `<span class="ml-2 text-sm text-neutral-500 line-through">$${p.was}</span>` : '';
-      const badge = p.badge ? `<span class="absolute left-3 top-3 rounded-full bg-black/80 px-2 py-1 text-xs text-white">${p.badge}</span>` : '';
-      return `
-        <article class="card overflow-hidden rounded-3xl border-0 bg-white shadow-soft ring-1 ring-black/5">
-          <div class="relative aspect-[3/4] overflow-hidden">
-            <img src="${p.image}" alt="${p.title}" class="h-full w-full object-cover transition-transform duration-300"/>
-            ${badge}
-            <div class="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/40 to-transparent"></div>
-          </div>
-          <div class="space-y-1 p-4 pb-0">
-            <h3 class="truncate font-medium">${p.title}</h3>
-            <div class="text-sm text-neutral-600">${p.color} · ${p.size}</div>
-          </div>
-          <div class="p-4 pt-2">
-            <div class="flex items-baseline gap-2">
-              <div class="text-lg font-semibold tracking-tight">$${p.price}</div>
-              ${was}
-            </div>
-            <button class="mt-3 w-full rounded-2xl bg-black px-3 py-2 text-white">Add to bag</button>
-          </div>
-        </article>`;
+    function card(p){
+      const was = (Number(p.was)||0)>0 ? `<span style="margin-left:6px;color:#6b7280;text-decoration:line-through">$${p.was}</span>` : '';
+      const img = p.image ? `<img src="${p.image}" alt="${(p.title||'Item')}"/>` : '';
+      const badge = p.badge ? `<span style="position:absolute;left:10px;top:10px;background:#000;color:#fff;border-radius:999px;padding:4px 8px;font-size:12px">${p.badge}</span>` : '';
+      return `<article class="card">
+        <div class="imgbox">${img}${badge}</div>
+        <div class="pad">
+          <div style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.title||'Untitled item'}</div>
+          <div class="muted">${p.color||''}${p.color&&p.size?' · ':''}${p.size||''}</div>
+        </div>
+        <div class="pad">
+          <div class="hstack" style="gap:8px;align-items:baseline"><div style="font-size:16px;font-weight:700">$${Number(p.price||0).toFixed(2)}</div>${was}</div>
+          <button class="btn primary block" style="margin-top:8px">Add to bag</button>
+        </div>
+      </article>`
     }
-
     function render(){
       const data = sortProducts(filterProducts());
-      els.count.textContent = `${data.length} item${data.length!==1?'s':''}`;
-      els.grid.innerHTML = data.map(productCard).join('');
+      els.count.textContent = `${data.length} item${data.length===1?'':'s'}`;
+      els.grid.innerHTML = data.map(card).join('');
     }
 
+    // --- Owner logic ---
+    const ADMIN_KEY='gj_admin_pw';
+    function isAuthed(){ return sessionStorage.getItem('gj_authed')==='1' && localStorage.getItem(ADMIN_KEY); }
+    function setAuthed(v){ sessionStorage.setItem('gj_authed', v?'1':'0'); }
+    function saveInventory(list){ PRODUCTS = list; localStorage.setItem('gj_inventory', JSON.stringify(PRODUCTS)); render(); refreshAdmin(); }
+
+    function parseCSV(text){
+      const lines = text.trim().split(/\r?\n/); if(!lines.length) return [];
+      const headers = lines.shift().split(',').map(h=>h.trim());
+      return lines.map((ln,i)=>{ const cells = ln.split(','); const o={}; headers.forEach((h,idx)=>o[h]= (cells[idx]||'').trim()); o.id=o.id||`p-${Date.now()}-${i}`; return o;});
+    }
+
+    function refreshGate(){
+      if(isAuthed()){ els.adminGate.style.display='none'; els.adminPanel.style.display='block'; }
+      else { els.adminGate.style.display='block'; els.adminPanel.style.display='none'; }
+    }
+    function refreshAdmin(){
+      if(!els.invTable) return; els.invCount.textContent=(PRODUCTS||[]).length;
+      els.invTable.innerHTML=(PRODUCTS||[]).map(p=>`<tr><td>${p.title||''}</td><td>$${Number(p.price||0).toFixed(2)}</td><td>${p.category||''}</td><td>${p.size||''}</td><td>${p.color||''}</td></tr>`).join('');
+    }
+
+    els.adminLogin.addEventListener('click', ()=>{
+      const saved = localStorage.getItem(ADMIN_KEY)||''; const val = (els.adminPw.value||'').trim();
+      if(!saved){ if(!val){ alert('Create a password first.'); return;} localStorage.setItem(ADMIN_KEY,val); setAuthed(true); }
+      else { if(val===saved) setAuthed(true); else return alert('Wrong password'); }
+      els.adminPw.value=''; refreshGate(); refreshAdmin();
+    });
+    els.adminLogout.addEventListener('click', ()=>{ setAuthed(false); refreshGate(); });
+
+    els.addItem.addEventListener('click', ()=>{
+      const get=id=>document.getElementById(id).value.trim();
+      const item={ id:`p-${Date.now()}`, title:get('f_title'), price:Number(get('f_price')||0), was:Number(get('f_was')||0), rating:Number(get('f_rating')||0)||0, category:get('f_category')||'new-arrivals', color:get('f_color'), size:get('f_size'), image:get('f_image'), badge:get('f_badge') };
+      saveInventory([...(PRODUCTS||[]), item]);
+      ['f_title','f_price','f_was','f_rating','f_category','f_color','f_size','f_image','f_badge'].forEach(id=>document.getElementById(id).value='');
+    });
+
+    els.clearInv.addEventListener('click', ()=>{ if(confirm('Clear all inventory?')) saveInventory([]); });
+
+    els.csvFile.addEventListener('change', e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=> saveInventory(parseCSV(r.result)); r.readAsText(f); e.target.value=''; });
+    els.jsonFile.addEventListener('change', e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const list=JSON.parse(r.result); if(Array.isArray(list)) saveInventory(list); else alert('JSON must be an array of items'); }catch{ alert('Invalid JSON'); } }; r.readAsText(f); e.target.value=''; });
+
+    // init
     els.year.textContent = new Date().getFullYear();
-    render();
+    render(); refreshAdmin(); refreshGate();
   </script>
 </body>
 </html>
