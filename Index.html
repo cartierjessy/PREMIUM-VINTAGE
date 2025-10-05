@@ -1,0 +1,433 @@
+import React, { useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Heart, ShoppingBag, Menu, Star, ChevronRight, Filter, Truck, Sparkles, BadgeDollarSign } from "lucide-react";
+
+// --- Dummy catalog data ---
+const CATEGORIES = [
+  { id: "new-arrivals", name: "New Arrivals" },
+  { id: "tops", name: "Tops" },
+  { id: "outerwear", name: "Outerwear" },
+  { id: "denim", name: "Denim" },
+  { id: "tees", name: "Graphic Tees" },
+  { id: "accessories", name: "Accessories" },
+];
+
+const SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
+const COLORS = ["Black", "White", "Cream", "Navy", "Olive", "Burgundy"];
+
+const PRODUCTS = Array.from({ length: 12 }).map((_, i) => ({
+  id: `p-${i + 1}`,
+  title: [
+    "Vintage Varsity Jacket",
+    "90s Band Graphic Tee",
+    "Selvedge Denim Jeans",
+    "Wool Overcoat",
+    "Corduroy Overshirt",
+    "Leather Biker Jacket",
+    "Herringbone Blazer",
+    "Cable Knit Sweater",
+    "Carpenter Denim",
+    "Suede Bomber",
+    "Oxford Button-Down",
+    "Workwear Chore Coat",
+  ][i % 12],
+  price: [98, 69, 140, 220, 115, 260, 185, 120, 130, 210, 85, 165][i % 12],
+  was: [0, 0, 0, 260, 0, 320, 0, 0, 0, 260, 0, 0][i % 12],
+  rating: [4.6, 4.8, 4.4, 4.9, 4.3, 4.7, 4.6, 4.5, 4.2, 4.7, 4.3, 4.5][i % 12],
+  category: CATEGORIES[i % CATEGORIES.length].id,
+  color: COLORS[i % COLORS.length],
+  size: SIZES[i % SIZES.length],
+  image: `https://picsum.photos/seed/vintage-${i + 1}/800/1000`,
+  badge: i % 5 === 0 ? "Limited" : i % 3 === 0 ? "New" : undefined,
+}));
+
+// --- Utility components ---
+const Container = ({ children }) => (
+  <div className="mx-auto w-full max-w-7xl px-4 md:px-6 lg:px-8">{children}</div>
+);
+
+const Logo = () => (
+  <div className="flex items-center gap-2">
+    <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-zinc-200 to-zinc-50 shadow-inner ring-1 ring-white/40" />
+    <span className="font-serif text-xl tracking-wide">Veluxe Vintage</span>
+  </div>
+);
+
+const StarRating = ({ value }) => (
+  <div className="flex items-center gap-1 text-sm">
+    {Array.from({ length: 5 }).map((_, i) => (
+      <Star key={i} className={`h-4 w-4 ${i < Math.round(value) ? "fill-current" : "opacity-30"}`} />
+    ))}
+    <span className="ml-1 text-zinc-500">{value.toFixed(1)}</span>
+  </div>
+);
+
+// --- Nav ---
+const NavBar = ({ onOpenFilters }) => {
+  return (
+    <div className="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-white/60 bg-white/80 border-b">
+      <Container>
+        <div className="flex h-16 items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden"><Menu className="h-5 w-5" /></Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-80">
+                <SheetHeader>
+                  <SheetTitle>Browse</SheetTitle>
+                </SheetHeader>
+                <nav className="mt-6 grid gap-2">
+                  {CATEGORIES.map(c => (
+                    <a key={c.id} href={`#${c.id}`} className="flex items-center justify-between rounded-xl border p-3 hover:shadow-sm">
+                      <span>{c.name}</span>
+                      <ChevronRight className="h-4 w-4" />
+                    </a>
+                  ))}
+                </nav>
+                <div className="mt-8">
+                  <Button onClick={onOpenFilters} variant="outline" className="w-full"><Filter className="mr-2 h-4 w-4"/>Filters</Button>
+                </div>
+              </SheetContent>
+            </Sheet>
+            <Logo />
+          </div>
+
+          <div className="hidden md:block w-full max-w-md">
+            <div className="relative">
+              <Input placeholder="Search vintage gems…" className="rounded-2xl pl-4 pr-12" />
+              <Button size="icon" variant="ghost" className="absolute right-1 top-1/2 -translate-y-1/2 rounded-xl">
+                <Sparkles className="h-5 w-5" />
+              </Button>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="icon"><Heart className="h-5 w-5"/></Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="icon"><ShoppingBag className="h-5 w-5"/></Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-lg">
+                <DialogHeader>
+                  <DialogTitle>Your bag</DialogTitle>
+                </DialogHeader>
+                <div className="text-sm text-zinc-600">No items yet — start exploring our limited drops.</div>
+              </DialogContent>
+            </Dialog>
+          </div>
+        </div>
+      </Container>
+    </div>
+  );
+};
+
+// --- Hero ---
+const Hero = () => {
+  return (
+    <section className="relative overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(1200px_600px_at_50%_-20%,rgba(0,0,0,0.08),transparent_60%)]"/>
+      <Container>
+        <div className="flex flex-col items-center gap-6 py-16 text-center md:py-20">
+          <Badge className="rounded-full px-3 py-1 text-xs">Curated & Authenticated</Badge>
+          <motion.h1 initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} transition={{duration:.5}} className="max-w-3xl font-serif text-4xl md:text-5xl">
+            Premium Vintage with a Modern Edge
+          </motion.h1>
+          <p className="max-w-2xl text-base text-zinc-600">
+            Discover hand‑picked pieces with impeccable provenance. Limited runs, boutique quality, and a smoother-than-Sh﻿opify shopping flow.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <Button className="rounded-2xl px-5">Shop New Drops</Button>
+            <Button variant="outline" className="rounded-2xl px-5">Explore Collections</Button>
+          </div>
+          <div className="grid w-full max-w-5xl grid-cols-2 gap-2 md:grid-cols-4">
+            {["Free 2–5 day shipping", "Carbon‑neutral packaging", "Easy 30‑day returns", "Verified vintage"]
+              .map((t, i) => (
+                <div key={i} className="rounded-2xl border p-3 text-sm text-zinc-600 flex items-center gap-2">
+                  {i===0 && <Truck className="h-4 w-4"/>}
+                  {i===1 && <Sparkles className="h-4 w-4"/>}
+                  {i===2 && <BadgeDollarSign className="h-4 w-4"/>}
+                  {i===3 && <Star className="h-4 w-4"/>}
+                  {t}
+                </div>
+            ))}
+          </div>
+        </div>
+      </Container>
+    </section>
+  );
+};
+
+// --- Filters ---
+const FilterPanel = ({ open, onOpenChange, price, setPrice, selected, setSelected }) => {
+  const toggle = (key, value) => {
+    setSelected(prev => {
+      const set = new Set(prev[key]);
+      set.has(value) ? set.delete(value) : set.add(value);
+      return { ...prev, [key]: set };
+    });
+  };
+
+  const content = (
+    <div className="grid gap-8">
+      <div>
+        <h4 className="mb-3 font-medium">Price</h4>
+        <Slider value={price} onValueChange={setPrice} min={40} max={300} step={5}/>
+        <div className="mt-2 text-sm text-zinc-600">Up to ${price[0]}</div>
+      </div>
+      <Accordion type="multiple" className="w-full">
+        <AccordionItem value="category">
+          <AccordionTrigger>Category</AccordionTrigger>
+          <AccordionContent>
+            <div className="flex flex-wrap gap-2">
+              {CATEGORIES.map(c => (
+                <Button key={c.id} variant={selected.categories.has(c.id) ? "default" : "outline"} className="rounded-xl" onClick={() => toggle("categories", c.id)}>
+                  {c.name}
+                </Button>
+              ))}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="size">
+          <AccordionTrigger>Size</AccordionTrigger>
+          <AccordionContent>
+            <div className="flex flex-wrap gap-2">
+              {SIZES.map(s => (
+                <Button key={s} variant={selected.sizes.has(s) ? "default" : "outline"} className="rounded-xl" onClick={() => toggle("sizes", s)}>
+                  {s}
+                </Button>
+              ))}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="color">
+          <AccordionTrigger>Color</AccordionTrigger>
+          <AccordionContent>
+            <div className="flex flex-wrap gap-2">
+              {COLORS.map(c => (
+                <Button key={c} variant={selected.colors.has(c) ? "default" : "outline"} className="rounded-xl" onClick={() => toggle("colors", c)}>
+                  {c}
+                </Button>
+              ))}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+    </div>
+  );
+
+  return (
+    <>
+      <div className="hidden lg:block sticky top-24 h-[calc(100vh-7rem)] w-72 shrink-0 overflow-y-auto rounded-2xl border p-5">
+        {content}
+      </div>
+      <Sheet open={open} onOpenChange={onOpenChange}>
+        <SheetContent side="right" className="w-full sm:max-w-md">
+          <SheetHeader>
+            <SheetTitle>Filters</SheetTitle>
+          </SheetHeader>
+          <div className="mt-6">{content}</div>
+        </SheetContent>
+      </Sheet>
+    </>
+  );
+};
+
+// --- Product Card ---
+const ProductCard = ({ product }) => {
+  return (
+    <Card className="group overflow-hidden rounded-3xl border-0 bg-white shadow-sm ring-1 ring-black/5">
+      <div className="relative aspect-[3/4] overflow-hidden">
+        <img src={product.image} alt={product.title} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"/>
+        {product.badge && (
+          <div className="absolute left-3 top-3">
+            <Badge className="rounded-full bg-black/80 text-white backdrop-blur">{product.badge}</Badge>
+          </div>
+        )}
+        <Button variant="secondary" className="absolute right-3 top-3 rounded-full bg-white/80 backdrop-blur hover:bg-white">
+          <Heart className="h-4 w-4"/>
+        </Button>
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/40 to-transparent"/>
+      </div>
+      <CardHeader className="space-y-1 p-4 pb-0">
+        <h3 className="line-clamp-1 font-medium">{product.title}</h3>
+        <StarRating value={product.rating} />
+      </CardHeader>
+      <CardContent className="p-4 pt-2">
+        <div className="flex items-baseline gap-2">
+          <div className="text-lg font-semibold tracking-tight">${product.price}</div>
+          {product.was > 0 && (
+            <div className="text-sm text-zinc-500 line-through">${product.was}</div>
+          )}
+        </div>
+        <div className="mt-1 text-xs text-zinc-500">{product.color} · {product.size}</div>
+      </CardContent>
+      <CardFooter className="p-4 pt-0">
+        <Button className="w-full rounded-2xl">Add to bag</Button>
+      </CardFooter>
+    </Card>
+  );
+};
+
+// --- Footer ---
+const Footer = () => (
+  <footer className="mt-20 bg-zinc-50">
+    <Container>
+      <div className="grid gap-10 py-12 md:grid-cols-4">
+        <div className="space-y-4">
+          <Logo />
+          <p className="text-sm text-zinc-600">A boutique marketplace for premium vintage. Curated weekly drops from trusted collectors.</p>
+        </div>
+        <div>
+          <h4 className="mb-3 font-medium">Shop</h4>
+          <ul className="space-y-2 text-sm text-zinc-600">
+            <li><a href="#" className="hover:underline">New Arrivals</a></li>
+            <li><a href="#" className="hover:underline">Best Sellers</a></li>
+            <li><a href="#" className="hover:underline">Last Chance</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 className="mb-3 font-medium">Support</h4>
+          <ul className="space-y-2 text-sm text-zinc-600">
+            <li><a href="#" className="hover:underline">Shipping & Returns</a></li>
+            <li><a href="#" className="hover:underline">Sizing Guide</a></li>
+            <li><a href="#" className="hover:underline">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 className="mb-3 font-medium">Newsletter</h4>
+          <div className="flex gap-2">
+            <Input placeholder="Email address" className="rounded-2xl"/>
+            <Button className="rounded-2xl">Join</Button>
+          </div>
+          <p className="mt-2 text-xs text-zinc-500">By subscribing, you agree to our Privacy Policy.</p>
+        </div>
+      </div>
+      <div className="flex items-center justify-between border-t py-6 text-xs text-zinc-500">
+        <p>© {new Date().getFullYear()} Veluxe Vintage</p>
+        <div className="flex gap-4">
+          <a href="#">Terms</a>
+          <a href="#">Privacy</a>
+          <a href="#">Cookies</a>
+        </div>
+      </div>
+    </Container>
+  </footer>
+);
+
+// --- Main Page ---
+export default function PremiumVintageSite() {
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [price, setPrice] = useState([220]);
+  const [selected, setSelected] = useState({ categories: new Set(), sizes: new Set(), colors: new Set() });
+  const [activeTab, setActiveTab] = useState("featured");
+  const [query, setQuery] = useState("");
+
+  const filtered = useMemo(() => {
+    return PRODUCTS.filter(p =>
+      p.price <= price[0] &&
+      (selected.categories.size ? selected.categories.has(p.category) : true) &&
+      (selected.sizes.size ? selected.sizes.has(p.size) : true) &&
+      (selected.colors.size ? selected.colors.has(p.color) : true) &&
+      (query.trim() ? p.title.toLowerCase().includes(query.toLowerCase()) : true)
+    );
+  }, [price, selected, query]);
+
+  const sorted = useMemo(() => {
+    switch (activeTab) {
+      case "featured":
+        return [...filtered].sort((a, b) => (b.badge ? 1 : 0) - (a.badge ? 1 : 0));
+      case "top-rated":
+        return [...filtered].sort((a, b) => b.rating - a.rating);
+      case "price-low":
+        return [...filtered].sort((a, b) => a.price - b.price);
+      case "price-high":
+        return [...filtered].sort((a, b) => b.price - a.price);
+      default:
+        return filtered;
+    }
+  }, [filtered, activeTab]);
+
+  return (
+    <div className="min-h-screen bg-white text-zinc-900">
+      <NavBar onOpenFilters={() => setFiltersOpen(true)} />
+      <Hero />
+
+      {/* Promo ribbon */}
+      <div className="sticky top-16 z-40 border-b bg-white/70 backdrop-blur">
+        <Container>
+          <div className="flex items-center justify-between py-2 text-sm">
+            <div className="hidden md:flex items-center gap-2 text-zinc-600">
+              <Sparkles className="h-4 w-4"/>
+              Weekly drops every Friday at 12 PM ET
+            </div>
+            <div className="flex w-full max-w-md items-center gap-2 md:justify-end">
+              <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search vintage gems…" className="rounded-2xl"/>
+              <Button variant="outline" className="rounded-2xl" onClick={() => setFiltersOpen(true)}>
+                <Filter className="mr-2 h-4 w-4"/> Filters
+              </Button>
+            </div>
+          </div>
+        </Container>
+      </div>
+
+      <Container>
+        <div className="mt-8 flex gap-8">
+          <FilterPanel open={filtersOpen} onOpenChange={setFiltersOpen} price={price} setPrice={setPrice} selected={selected} setSelected={setSelected} />
+
+          <div className="flex-1">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <div className="flex items-center justify-between">
+                <TabsList className="rounded-2xl">
+                  <TabsTrigger value="featured">Featured</TabsTrigger>
+                  <TabsTrigger value="top-rated">Top Rated</TabsTrigger>
+                  <TabsTrigger value="price-low">Price: Low</TabsTrigger>
+                  <TabsTrigger value="price-high">Price: High</TabsTrigger>
+                </TabsList>
+                <div className="hidden text-sm text-zinc-600 lg:block">{sorted.length} items</div>
+              </div>
+              <TabsContent value="featured" className="mt-6">
+                <ProductGrid products={sorted} />
+              </TabsContent>
+              <TabsContent value="top-rated" className="mt-6">
+                <ProductGrid products={sorted} />
+              </TabsContent>
+              <TabsContent value="price-low" className="mt-6">
+                <ProductGrid products={sorted} />
+              </TabsContent>
+              <TabsContent value="price-high" className="mt-6">
+                <ProductGrid products={sorted} />
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
+      </Container>
+
+      <Footer />
+    </div>
+  );
+}
+
+function ProductGrid({ products }) {
+  if (!products.length) {
+    return (
+      <div className="flex h-40 items-center justify-center rounded-2xl border text-sm text-zinc-600">No items match your filters.</div>
+    );
+  }
+  return (
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+      {products.map((p) => (
+        <ProductCard key={p.id} product={p} />
+      ))}
+    </div>
+  );
+}
