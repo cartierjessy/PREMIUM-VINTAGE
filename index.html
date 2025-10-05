@@ -5,51 +5,74 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>G&J Premium Vintage Collection</title>
   <style>
+    /* --- STREETWEAR THEME (no CDN) --- */
     :root{
-      --bg:#ffffff;--text:#111;--muted:#6b7280;--line:#e5e7eb;--ink:#000;--pill:#f8f8f8;
-      --radius:16px;--radius-lg:22px;--shadow:0 10px 30px -12px rgba(0,0,0,.15)
+      --bg:#0b0b0b; --card:#111; --ink:#fafafa; --muted:#a3a3a3; --line:#222;
+      --accent:#e11d48; /* rose */
+      --accent2:#22c55e; /* green pop */
+      --radius:18px; --shadow:0 18px 60px -20px rgba(0,0,0,.5);
     }
-    *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font:14px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:14px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
     a{color:inherit;text-decoration:none}
-    .container{max-width:1120px;margin:0 auto;padding:0 20px}
-    .glass{backdrop-filter:saturate(150%) blur(8px);background:rgba(255,255,255,.75)}
-    header{position:sticky;top:0;z-index:40;border-bottom:1px solid var(--line)}
+    .container{max-width:1180px;margin:0 auto;padding:0 20px}
+    .glass{backdrop-filter:saturate(160%) blur(8px);background:rgba(17,17,17,.7)}
+    .border{border:1px solid var(--line)}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:34px;height:34px;border-radius:12px;background:conic-gradient(from 210deg,var(--accent),#ef4444,#f59e0b,#eab308,#22c55e,#06b6d4,#8b5cf6,var(--accent)); box-shadow:inset 0 0 0 2px #000}
+    .headline{font-size:20px;font-weight:800;letter-spacing:.2px;text-transform:uppercase}
     .hstack{display:flex;align-items:center;gap:12px}
     .spacer{flex:1}
-    .brand{display:flex;align-items:center;gap:10px}
-    .logo{width:32px;height:32px;border-radius:12px;background:linear-gradient(135deg,#e7e7e7,#fff);box-shadow:inset 0 0 0 1px #fff}
-    .headline{font-size:28px;font-weight:650}
-    input[type="search"],input[type="text"],input[type="number"],input[type="password"],select{border:1px solid var(--line);border-radius:16px;padding:10px 12px;outline:none}
-    input:focus,select:focus{box-shadow:0 0 0 2px rgba(0,0,0,.08)}
-    .btn{border:1px solid var(--line);border-radius:16px;padding:10px 14px;background:#fff;cursor:pointer}
-    .btn.primary{background:#000;color:#fff;border-color:#000}
-    .btn.block{width:100%}
+    input,select,button{border:1px solid var(--line);border-radius:12px;padding:10px 12px;outline:none;background:#0f0f0f;color:var(--ink)}
+    input:focus,select:focus{box-shadow:0 0 0 2px rgba(225,29,72,.25)}
+    .btn{cursor:pointer}
+    .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+    .btn.ghost{background:transparent}
+    header{position:sticky;top:0;z-index:40;border-bottom:1px solid var(--line)}
+
+    /* HERO */
     .hero{position:relative;overflow:hidden}
-    .hero::before{content:"";position:absolute;inset:-20% -10% auto -10%;height:320px;background:radial-gradient(1200px 600px at 50% -20%,rgba(0,0,0,.08),transparent 60%);z-index:-1}
-    .hero .wrap{padding:48px 0;text-align:center}
-    .badge{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:12px}
-    h1{font-size:36px;margin:10px 0 8px}
-    .muted{color:var(--muted)}
-    .pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:var(--pill)}
-    .toolbar{position:sticky;top:64px;z-index:30;border-bottom:1px solid var(--line)}
-    .chip{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:#fff;cursor:pointer}
-    .chip.active{background:#000;color:#fff;border-color:#000}
+    .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(800px 400px at 70% -10%,rgba(225,29,72,.25),transparent 60%),radial-gradient(600px 300px at 0% 0%,rgba(34,197,94,.2),transparent 60%)}
+    .hero .wrap{padding:40px 0;text-align:center}
+    .badge{display:inline-block;border:1px dashed var(--line);border-radius:999px;padding:6px 12px;font-size:12px;letter-spacing:.4px;color:var(--muted)}
+    h1{font-size:38px;letter-spacing:.2px;margin:10px 0 12px;text-transform:uppercase}
+    .kicker{color:var(--muted)}
+
+    /* MARQUEE */
+    .marquee{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#0f0f0f}
+    .marquee .track{display:flex;gap:24px;white-space:nowrap;will-change:transform;animation:slide 18s linear infinite}
+    .tag{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:#0d0d0d;color:var(--muted)}
+    .dot{width:6px;height:6px;border-radius:999px;background:var(--accent2)}
+    @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50% )}}
+
+    /* TOOLBAR */
+    .toolbar{position:sticky;top:64px;z-index:30;border-bottom:1px solid var(--line);background:#0e0e0e}
+    .chip{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:#0d0d0d;color:#e5e5e5;cursor:pointer}
+    .chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+    /* LAYOUT */
     .layout{display:flex;gap:24px;margin-top:24px}
-    aside{position:sticky;top:110px;height:calc(100vh - 140px);overflow:auto;border:1px solid var(--line);border-radius:var(--radius);padding:20px;min-width:260px}
+    aside{position:sticky;top:118px;height:calc(100vh - 150px);overflow:auto;border:1px solid var(--line);border-radius:var(--radius);padding:18px;min-width:260px;background:#0e0e0e}
     .range{width:100%}
+
+    /* GRID */
     .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
     @media(min-width:900px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
-    .card{border-radius:22px;overflow:hidden;background:#fff;box-shadow:var(--shadow);border:1px solid rgba(0,0,0,.05)}
-    .imgbox{position:relative;aspect-ratio:3/4;background:#f2f2f2}
-    .imgbox img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
-    .card:hover .imgbox img{transform:scale(1.03)}
-    .card .pad{padding:14px}
-    footer{margin-top:60px;background:#fafafa;border-top:1px solid var(--line)}
+    .card{border-radius:20px;overflow:hidden;background:var(--card);box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.04)}
+    .imgbox{position:relative;aspect-ratio:3/4;background:#0a0a0a}
+    .imgbox img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease, filter .3s ease;filter:saturate(.92)}
+    .card:hover .imgbox img{transform:scale(1.035);filter:saturate(1)}
+    .badge2{position:absolute;left:10px;top:10px;background:#111;border:1px solid var(--line);color:#fff;border-radius:999px;padding:4px 10px;font-size:12px}
+    .price{font-size:16px;font-weight:800}
+    .was{margin-left:8px;color:#9ca3af;text-decoration:line-through}
+
+    footer{margin-top:60px;border-top:1px solid var(--line);background:#0e0e0e;color:#d4d4d4}
+
+    /* OWNER modal */
+    #owner{position:fixed;inset:0;background:rgba(10,10,10,.96);z-index:60;overflow:auto;display:none}
+    #owner.open{display:block}
     table{width:100%;border-collapse:collapse}
     th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left}
-    /* Owner modal */
-    #owner{position:fixed;inset:0;background:rgba(255,255,255,.96);z-index:60;overflow:auto;display:none}
-    #owner.open{display:block}
   </style>
 </head>
 <body>
@@ -58,34 +81,42 @@
     <div class="container hstack" style="height:64px">
       <div class="brand"><div class="logo"></div><div class="headline">G&J Premium Vintage Collection</div></div>
       <div class="spacer"></div>
-      <input id="searchTop" type="search" placeholder="Search vintage gems…" style="min-width:280px" />
-      <button id="openOwner" class="btn" title="Owner panel">Owners</button>
-      <button id="openFilters" class="btn">Filters</button>
-      <button class="btn">Bag (0)</button>
+      <input id="searchTop" type="search" placeholder="Search drops & brands…" style="min-width:280px" />
+      <button id="openOwner" class="btn ghost" title="Owner panel">Owners</button>
+      <button id="openFilters" class="btn ghost">Filters</button>
+      <button class="btn primary">Bag (0)</button>
     </div>
   </header>
 
   <!-- HERO -->
   <section class="hero">
     <div class="container wrap">
-      <div class="badge">Curated & Authenticated</div>
-      <h1>Premium Vintage with a Modern Edge</h1>
-      <p class="muted">Hand‑picked pieces with impeccable provenance. Limited runs, boutique quality, and a smooth shopping flow.</p>
-      <div style="margin-top:12px">
+      <span class="badge">Curated · Authenticated · Limited Runs</span>
+      <h1>Streetwear‑Driven Vintage</h1>
+      <p class="kicker">Hand‑selected jackets, band tees, denim, and archive pieces. Fresh drops weekly.</p>
+      <div class="hstack" style="justify-content:center;margin-top:14px;gap:10px">
         <a href="#grid" class="btn primary">Shop New Drops</a>
         <a href="#grid" class="btn">Explore Collections</a>
-      </div>
-      <div class="hstack" style="flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px">
-        <span class="pill">Free 2–5 day shipping</span>
-        <span class="pill">Carbon‑neutral packaging</span>
-        <span class="pill">Easy 30‑day returns</span>
-        <span class="pill">Verified vintage</span>
       </div>
     </div>
   </section>
 
+  <!-- MARQUEE -->
+  <div class="marquee">
+    <div class="track" aria-hidden="true" style="padding:10px 0">
+      <span class="tag"><span class="dot"></span> Free 2–5 day shipping</span>
+      <span class="tag"><span class="dot"></span> Easy 30‑day returns</span>
+      <span class="tag"><span class="dot"></span> Verified vintage</span>
+      <span class="tag"><span class="dot"></span> Carbon‑neutral packaging</span>
+      <span class="tag"><span class="dot"></span> Free 2–5 day shipping</span>
+      <span class="tag"><span class="dot"></span> Easy 30‑day returns</span>
+      <span class="tag"><span class="dot"></span> Verified vintage</span>
+      <span class="tag"><span class="dot"></span> Carbon‑neutral packaging</span>
+    </div>
+  </div>
+
   <!-- TOOLBAR -->
-  <div class="toolbar glass">
+  <div class="toolbar">
     <div class="container hstack" style="padding:10px 0;justify-content:space-between">
       <div class="hstack" id="cats">
         <button class="chip active" data-filtercat="all">All</button>
@@ -109,9 +140,9 @@
   <main class="container">
     <div class="layout">
       <aside id="filters">
-        <h3>Filters</h3>
+        <h3 style="margin:0 0 8px">Filters</h3>
         <div style="margin:12px 0">
-          <div class="muted">Max Price: <b id="priceValue">$220</b></div>
+          <div class="kicker">Max Price: <b id="priceValue">$220</b></div>
           <input id="price" class="range" type="range" min="40" max="300" step="5" value="220" />
         </div>
         <details open>
@@ -125,7 +156,7 @@
       </aside>
 
       <section style="flex:1">
-        <div id="count" class="muted" style="margin-bottom:8px">0 items</div>
+        <div id="count" class="kicker" style="margin-bottom:8px">0 items</div>
         <div id="grid" class="grid"></div>
       </section>
     </div>
@@ -134,29 +165,29 @@
   <footer>
     <div class="container" style="padding:22px 0">
       <div class="hstack" style="justify-content:space-between">
-        <div class="muted">© <span id="year"></span> G&J Premium Vintage Collection</div>
-        <div class="hstack muted" style="gap:16px"><a href="#">Terms</a><a href="#">Privacy</a><a href="#">Cookies</a></div>
+        <div class="kicker">© <span id="year"></span> G&J Premium Vintage Collection</div>
+        <div class="hstack kicker" style="gap:16px"><a href="#">Terms</a><a href="#">Privacy</a><a href="#">Cookies</a></div>
       </div>
     </div>
   </footer>
 
-  <!-- OWNER PANEL (hashless modal) -->
+  <!-- OWNER PANEL -->
   <section id="owner">
     <div class="container" style="padding:32px 0 60px">
       <div class="hstack" style="justify-content:space-between;margin-bottom:12px">
-        <h2 style="font-size:28px">Owner Panel — G&J Premium Vintage Collection</h2>
+        <h2 style="font-size:26px;text-transform:uppercase">Owner Panel — G&J Premium Vintage Collection</h2>
         <button id="closeOwner" class="btn">Close</button>
       </div>
 
-      <div id="adminGate" style="border:1px solid var(--line);border-radius:var(--radius);padding:16px">
-        <p class="muted" style="margin:0 0 8px">Enter owner password. On first use, this sets the password (stored only in this browser).</p>
+      <div id="adminGate" class="border" style="border-radius:var(--radius);padding:16px;background:#0f0f0f">
+        <p class="kicker" style="margin:0 0 8px">Enter owner password. On first use, this sets the password (stored only in this browser).</p>
         <div class="hstack"><input id="adminPw" type="password" placeholder="Owner password" class="spacer"/><button id="adminLogin" class="btn primary">Enter</button></div>
-        <p class="muted" style="font-size:12px;margin-top:8px">For multi-user security, add a real backend later.</p>
+        <p class="kicker" style="font-size:12px;margin-top:8px">For multi-user security, add a real backend later.</p>
       </div>
 
       <div id="adminPanel" style="display:none">
         <div class="hstack" style="justify-content:space-between;margin:14px 0">
-          <div class="muted">Inventory items: <b id="invCount"></b></div>
+          <div class="kicker">Inventory items: <b id="invCount"></b></div>
           <div class="hstack">
             <button id="exportJSON" class="btn">Export JSON</button>
             <button id="clearInv" class="btn">Clear All</button>
@@ -165,8 +196,8 @@
         </div>
 
         <div class="layout" style="margin-top:0">
-          <div style="border:1px solid var(--line);border-radius:var(--radius);padding:16px;min-width:320px">
-            <h3>Add Single Item</h3>
+          <div class="border" style="border-radius:var(--radius);padding:16px;min-width:320px;background:#0f0f0f">
+            <h3 style="margin:0 0 8px">Add Single Item</h3>
             <div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:8px">
               <input id="f_title" placeholder="Title" style="grid-column:1/3"/>
               <input id="f_price" type="number" step="0.01" placeholder="Price"/>
@@ -178,23 +209,23 @@
               <input id="f_image" placeholder="Image URL" style="grid-column:1/3"/>
               <input id="f_badge" placeholder="Badge (New/Limited)" style="grid-column:1/3"/>
             </div>
-            <button id="addItem" class="btn primary block" style="margin-top:10px">Add Item</button>
+            <button id="addItem" class="btn primary" style="margin-top:10px;width:100%">Add Item</button>
           </div>
 
-          <div style="border:1px solid var(--line);border-radius:var(--radius);padding:16px;flex:1">
-            <h3>Bulk Import</h3>
-            <p class="muted">CSV columns: <code>title,price,was,rating,category,color,size,image,badge</code></p>
+          <div class="border" style="border-radius:var(--radius);padding:16px;flex:1;background:#0f0f0f">
+            <h3 style="margin:0 0 8px">Bulk Import</h3>
+            <p class="kicker">CSV columns: <code>title,price,was,rating,category,color,size,image,badge</code></p>
             <div class="hstack" style="flex-wrap:wrap">
               <input id="csvFile" type="file" accept=".csv"/>
               <input id="jsonFile" type="file" accept="application/json"/>
             </div>
-            <p class="muted" style="font-size:12px;margin-top:6px">Data is saved to this browser (localStorage). Export JSON to move to another device.</p>
+            <p class="kicker" style="font-size:12px;margin-top:6px">Data is saved to this browser (localStorage). Export JSON to move to another device.</p>
           </div>
         </div>
 
-        <div style="border:1px solid var(--line);border-radius:var(--radius);margin-top:16px;overflow:auto">
+        <div class="border" style="border-radius:var(--radius);margin-top:16px;overflow:auto;background:#0f0f0f">
           <table>
-            <thead style="background:#fafafa"><tr><th>Title</th><th>Price</th><th>Category</th><th>Size</th><th>Color</th></tr></thead>
+            <thead style="background:#111"><tr><th>Title</th><th>Price</th><th>Category</th><th>Size</th><th>Color</th></tr></thead>
             <tbody id="invTable"></tbody>
           </table>
         </div>
@@ -225,12 +256,13 @@
     };
 
     // --- UI helpers ---
-    function chip(text, on){ const b=document.createElement('button'); b.className='btn'; b.textContent=text; b.onclick=on; return b; }
+    function chip(text, on){ const b=document.createElement('button'); b.className='chip'; b.textContent=text; b.onclick=on; return b; }
+    function btn(text, on){ const b=document.createElement('button'); b.className='btn'; b.textContent=text; b.onclick=on; return b; }
     function toggleSet(set,v){ set.has(v)?set.delete(v):set.add(v); render(); refreshAdmin(); }
 
     // size/color chips
-    SIZES.forEach(s=> els.sizeGroup.appendChild(chip(s, ()=>toggleSet(state.sizes,s))));
-    COLORS.forEach(c=> els.colorGroup.appendChild(chip(c, ()=>toggleSet(state.colors,c))));
+    SIZES.forEach(s=> els.sizeGroup.appendChild(btn(s, ()=>toggleSet(state.sizes,s))));
+    COLORS.forEach(c=> els.colorGroup.appendChild(btn(c, ()=>toggleSet(state.colors,c))));
 
     // category chips
     els.cats.querySelectorAll('[data-filtercat]').forEach(ch=>{
@@ -272,18 +304,18 @@
       }
     }
     function card(p){
-      const was = (Number(p.was)||0)>0 ? `<span style="margin-left:6px;color:#6b7280;text-decoration:line-through">$${p.was}</span>` : '';
+      const was = (Number(p.was)||0)>0 ? `<span class="was">$${p.was}</span>` : '';
       const img = p.image ? `<img src="${p.image}" alt="${(p.title||'Item')}"/>` : '';
-      const badge = p.badge ? `<span style="position:absolute;left:10px;top:10px;background:#000;color:#fff;border-radius:999px;padding:4px 8px;font-size:12px">${p.badge}</span>` : '';
+      const badge = p.badge ? `<span class="badge2">${p.badge}</span>` : '';
       return `<article class="card">
         <div class="imgbox">${img}${badge}</div>
-        <div class="pad">
-          <div style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.title||'Untitled item'}</div>
-          <div class="muted">${p.color||''}${p.color&&p.size?' · ':''}${p.size||''}</div>
+        <div class="pad" style="padding:14px 14px 0">
+          <div style="font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:uppercase">${p.title||'Untitled item'}</div>
+          <div style="color:var(--muted)">${p.color||''}${p.color&&p.size?' · ':''}${p.size||''}</div>
         </div>
-        <div class="pad">
-          <div class="hstack" style="gap:8px;align-items:baseline"><div style="font-size:16px;font-weight:700">$${Number(p.price||0).toFixed(2)}</div>${was}</div>
-          <button class="btn primary block" style="margin-top:8px">Add to bag</button>
+        <div class="pad" style="padding:10px 14px 14px">
+          <div class="hstack" style="gap:8px;align-items:baseline"><div class="price">$${Number(p.price||0).toFixed(2)}</div>${was}</div>
+          <button class="btn primary" style="margin-top:8px;width:100%">Add to bag</button>
         </div>
       </article>`
     }
@@ -335,7 +367,7 @@
     els.jsonFile.addEventListener('change', e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const list=JSON.parse(r.result); if(Array.isArray(list)) saveInventory(list); else alert('JSON must be an array of items'); }catch{ alert('Invalid JSON'); } }; r.readAsText(f); e.target.value=''; });
 
     // init
-    els.year.textContent = new Date().getFullYear();
+    document.getElementById('year')?.textContent = new Date().getFullYear();
     render(); refreshAdmin(); refreshGate();
   </script>
 </body>
